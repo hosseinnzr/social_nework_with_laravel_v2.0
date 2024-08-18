@@ -200,7 +200,6 @@
               
               <!-- Card body START -->
               <div class="card-body">
-                  <h5>{{$post['title']}}</h5>
                   <p class="mb-0">{{$post['post']}}</p>
                   <br>
                   

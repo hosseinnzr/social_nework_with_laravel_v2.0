@@ -43,16 +43,6 @@
                     </div>
 
                     <div class="mb-3 input-group-lg">
-                      <br>
-                      <label for="title" class="form-label">title :</label>
-                      <input value="{{ $post['title'] ?? old('title')}}" type="text" class="form-control" name="title">
-
-                      @error('title')
-                      <p class="text-red-500 text-xs mt-1">{{$message}}</p>
-                      @enderror
-                    </div>
-
-                    <div class="mb-3 input-group-lg">
                       <label for="post" class="form-label">post :</label>
                       <textarea type="text" class="form-control" name="post" rows="5">{{ $post['post'] ?? old('post')}}</textarea>
                     

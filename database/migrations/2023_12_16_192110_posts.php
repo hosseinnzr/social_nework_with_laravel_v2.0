@@ -12,7 +12,6 @@ return new class extends Migration
         Schema::create('post', function (Blueprint $table) {
             $table->id();
             $table->string('UID');
-            $table->string('title')->nullable();
             $table->string('post');
             $table->longText('tag')->nullable();
             $table->boolean('delete')->default(0);
