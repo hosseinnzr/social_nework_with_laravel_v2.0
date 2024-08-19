@@ -55,7 +55,7 @@
                     <a class="nav-link d-flex mb-0" href="#nav-setting-tab-5" data-bs-toggle="tab"> <img class="me-2 h-20px fa-fw" src="{{asset("assets/images/icon/chat-alt-outline-filled.svg")}}" alt=""><span>Messaging </span></a>
                   </li>
                   <li class="nav-item" data-bs-dismiss="offcanvas">
-                    <a class="nav-link d-flex mb-0" href="#nav-setting-tab-6" data-bs-toggle="tab"> <img class="me-2 h-20px fa-fw" src="{{asset("assets/images/icon/trash-var-outline-filled.svg")}}" alt=""><span>Close account </span></a>
+                    <a class="nav-link d-flex mb-0" href="#nav-setting-tab-6" data-bs-toggle="tab"> <img class="me-2 h-20px fa-fw" src="{{asset("assets/images/icon/trash-var-outline-filled.svg")}}" alt=""><span>Delete account </span></a>
                   </li>
                 </ul>
                 <!-- Side Nav END -->
@@ -722,23 +722,82 @@
                 <!-- Card header START -->
                 <div class="card-header border-0 pb-0">
                   <h5 class="card-title">Delete account</h5>
-                  <p class="mb-0">He moonlights difficult engrossed it, sportsmen. Interested has all Devonshire difficulty gay assistance joy. Unaffected at ye of compliment alteration to.</p>
+                  <p class="mb-0"></p>
                 </div>
                 <!-- Card header START -->
                 <!-- Card body START -->
                 <div class="card-body">
                   <!-- Delete START -->
-                  <h6>Before you go...</h6>
-                  <ul>
-                    <li>Take a backup of your data <a href="#">Here</a> </li>
-                    <li>If you delete your account, you will lose your all data.</li>
-                  </ul>
-                  <div class="form-check form-check-md my-4">
-                    <input class="form-check-input" type="checkbox" value="" id="deleteaccountCheck">
-                    <label class="form-check-label" for="deleteaccountCheck">Yes, I'd like to delete my account</label>
-                  </div>
-                  <a href="#" class="btn btn-success-soft btn-sm mb-2 mb-sm-0">Keep my account</a>
-                  <a href="#" class="btn btn-danger btn-sm mb-0">Delete my account</a>
+                  <form action="{{route('delacount')}}" method="POST">
+                    @csrf
+
+                    <h6>Why you want delete acount</h6>
+
+                    <div style="width: 50%">
+                      <select class="form-select" name="why" id="reasonSelect">
+                        <option selected>choese one</option>
+                        <option>دوست دارم</option>
+                        <option>به توچه</option>
+                        <option>همینجوری برای خنده</option>
+                        <option>همه موارد</option>
+                      </select>
+                    </div>
+
+                    <div class="form-check form-check-md my-4">
+                      <input name="checkbox" class="form-check-input" type="checkbox" value="true" id="deleteaccountCheck">
+                      <label class="form-check-label" for="deleteaccountCheck">Yes, I'd like to delete my account</label>
+                    </div>
+                    
+                    <a class="btn btn-danger btn-sm mb-0 disabled" id="deleteAccountButton" href="#!" data-bs-toggle="modal" data-bs-target="#DelAccount">
+                      <i style="font-size: 15px" class="bi bi-trash pe-2"></i>Delete my account
+                    </a>
+
+                    <script>
+                      function updateButtonState() {
+                        var deleteButton = document.getElementById('deleteAccountButton');
+                        var checkboxChecked = document.getElementById('deleteaccountCheck').checked;
+                        var reasonSelected = document.getElementById('reasonSelect').value !== 'choese one';
+                        
+                        if (checkboxChecked && reasonSelected) {
+                          deleteButton.classList.remove('disabled');
+                        } else {
+                          deleteButton.classList.add('disabled');
+                        }
+                      }
+                    
+                      document.getElementById('deleteaccountCheck').addEventListener('change', updateButtonState);
+                      document.getElementById('reasonSelect').addEventListener('change', updateButtonState);
+                    </script>
+
+                    <!-- Modal create Feed photo START -->
+                      <div class="modal fade" id="DelAccount" tabindex="-1" aria-labelledby="DelAccountLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                          <div class="modal-content">
+                            <!-- Modal feed header START -->
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="DelAccountLabel">Delete account</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <!-- Modal feed header END -->
+
+                              <!-- Modal feed body START -->
+                              <div class="modal-body">
+                                <h6>Are you sure that you want to delete your account?</h6>
+                              </div>
+                              <!-- Modal feed body END -->
+
+                              <!-- Modal feed footer -->
+                              <div class="modal-footer ">
+                                <!-- Button -->
+                                <button type="submit" href="#" class="btn btn-danger btn-sm mb-0">Yes, Delete my account</button>
+                              </div>
+                              <!-- Modal feed footer -->
+                          </div>
+                        </div>
+                      </div>
+                    <!-- Modal create Feed photo END -->
+
+                  </form>
                   <!-- Delete END -->
                 </div>
               <!-- Card body END -->

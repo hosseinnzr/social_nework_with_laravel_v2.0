@@ -194,7 +194,7 @@ class AuthManager extends Controller
         return redirect()->route('settings');
         
     }
-    public function delete($id){
+    public function deletePost($id){
         try {
             $status = Post::where(['id' => $id]) -> delete();
 
@@ -209,34 +209,6 @@ class AuthManager extends Controller
             return Response()->json($error, 400);
         }
     }
-    
-    //     $this->validate($request, [
-    //         'current_password' => 'required|string',
-    //         'new_password' => 'required|confirmed|min:4|string'
-    //     ]);
-
-    //     $auth = Auth::user();
-
-    //     // The passwords matches
-    //         if (!Hash::check($request->get('current_password'), $auth->password)) 
-    //         {
-    //             notify()->error('Current Password is Invalid');
-    //             return back();
-    //         }
-    
-    //     // Current password and new password same
-    //         if (strcmp($request->get('current_password'), $request->new_password) == 0) 
-    //         {
-    //             notify()->error('New Password cannot be same as your current password.');
-    //             return back();
-    //         }
-    
-    //         $user =  User::find($auth->id);
-    //         $user->password =  Hash::make($request->new_password);
-    //         $user->save();
-    //         notify()->success('Password Changed Successfully');
-    //         return back();       
-    // }
 
 
     // follow
@@ -307,5 +279,34 @@ class AuthManager extends Controller
 
         return back();
 
+    }
+
+
+    // delete account
+    public function deleteAccount(Request $request){
+        if(auth::check()){
+            $userId = Auth::id();
+            $user =  User::findOrFail($userId);
+
+            $request->validate([
+                'why' => 'required',
+                'checkbox' => 'required',
+            ]);
+    
+            $user->status = 'delete';
+            $user->save();
+                
+            Auth::logout();
+
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+    
+            notify()->success('delete account successfully!');
+             
+            return redirect()->route('signin');
+
+        }else{
+            return view('signin');
+        }
     }
 }

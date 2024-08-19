@@ -12,6 +12,9 @@ Route::get('/signup', [AuthManager::class, 'signup'])->name('signup');
 
 Route::middleware(['web', 'throttle:600,1'])->group(function () {
 
+    // delet account
+    Route::post('/delaccount', [AuthManager::class, 'deleteAccount'])->name('delacount');
+
     // follow
     Route::post('/follow/{id}', [AuthManager::class, 'follow'])->name('follow');
 
@@ -31,7 +34,7 @@ Route::middleware(['web', 'throttle:600,1'])->group(function () {
     Route::post('/settings', [AuthManager::class, "update"])->name('settings.post');
 
     // Delete Post
-    Route::get('/delete', [PostController::class, "delete"])->name('delete');
+    Route::get('/delete', [PostController::class, "deletePost"])->name('delete');
 
     // Save post
     Route::post('/save', [PostController::class, "save"])->name('save.post');
