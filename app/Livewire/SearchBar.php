@@ -15,7 +15,7 @@ class SearchBar extends Component
         $result = [];
 
         if(strlen($this->search) >= 2){
-            $result = User::where('user_name', 'like', '%'.$this->search.'%')->limit(6)->get();
+            $result = User::where('status', 'active')->where('user_name', 'like', '%'.$this->search.'%')->limit(6)->get();
         }
 
         return view('livewire.search-bar', [
