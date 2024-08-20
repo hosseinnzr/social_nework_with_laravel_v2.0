@@ -11,9 +11,15 @@ class StoryControllers extends Controller
 {
     public function show(Request $request){
         if(auth::check()){
-            $show_story = story::all();
-        
-            foreach ($show_story as $story) {
+            $storys_users_id = story::orderBy('id')->select('UID')->groupBy('UID')->get();
+
+            $show_all_story = collect(); // empty collection
+            foreach($storys_users_id as $storys_user_id){
+                $user_storys = story::where('UID', $storys_user_id['UID'])->get();
+                $show_all_story = $show_all_story->merge($user_storys);
+            }
+    
+            foreach ($show_all_story as $story) {
                 $user = User::where('id', $story->UID)->select('id', 'user_name', 'first_name', 'last_name', 'profile_pic')->first();
                 $story['user_id'] = $user['id'];
                 $story['user_name'] = $user['user_name'];
@@ -21,16 +27,16 @@ class StoryControllers extends Controller
                 $story['last_name'] = $user['last_name'];
                 $story['user_profile_pic'] = $user['profile_pic'];
             }
-    
+
             if(isset($request->user)){
-                for($i=0; $i < count($show_story); $i++){
-                    if($show_story[$i]['user_name'] == $request->user){
-                        return view('home.story', ['all_story' => $show_story, 'show_story_number' => $i]);
+                for($i=0; $i < count($show_all_story); $i++){
+                    if($show_all_story[$i]['user_name'] == $request->user){
+                        return view('home.story', ['all_story' => $show_all_story, 'show_story_number' => $i]);
                     }
                 }
             }
     
-            return view('home.story', ['all_story' => $show_story, 'show_story_number' => 0]);
+            return view('home.story', ['all_story' => $show_all_story, 'show_story_number' => 0]);
         }else{
             return redirect()->route('signin');
         }
@@ -39,8 +45,11 @@ class StoryControllers extends Controller
     public function create(Request $request){
 
         if(auth::check()){
+            $request->validate([
+                'description' => 'required',
+            ]);
+
             $inputs = $request->only([
-                'title',
                 'description',
                 'story_picture',
             ]);

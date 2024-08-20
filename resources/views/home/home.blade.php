@@ -550,18 +550,6 @@
             <!-- Form START -->
             <form method="POST" action="{{ route('crate.story')}}" enctype="multipart/form-data" class="row g-4">
               @csrf
-              <!-- Title -->
-              <div class="col-12">
-                <label class="form-label">Title</label>
-                <input name="title" type="text" class="form-control" placeholder="story title">
-              </div>
-
-              <!-- Description -->
-              <div class="col-12">
-                <label class="form-label">Description</label>
-                <textarea name="description" class="form-control" rows="2" placeholder="story Description..."></textarea>
-              </div>
-
               <!-- Photo START -->
               <div class="col-sm-12 col-lg-12">
 
@@ -572,6 +560,12 @@
                 @enderror
               </div>
               <!-- Photo END -->
+
+              <!-- Description -->
+              <div class="col-12">
+                <label class="form-label">Description</label>
+                <textarea name="description" class="form-control" rows="4" placeholder="story Description..."></textarea>
+              </div>
 
               <div class="modal-footer">
                 <button type="submit" class="btn btn-danger-soft me-2" data-bs-dismiss="modal"> Cancel</button>

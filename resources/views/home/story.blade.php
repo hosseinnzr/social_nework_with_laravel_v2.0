@@ -44,7 +44,6 @@
                                     </div>
 
                                     <div style="width: 70%" class="tranding-slide-content-bottom">
-                                        <h2 class="food-name"> {{$story['title']}} </h2>
                                         <h5 class="food-rating">
                                             <span> {{$story['description']}} </span>
                                         </h5>
