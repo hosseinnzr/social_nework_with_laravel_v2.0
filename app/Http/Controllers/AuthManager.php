@@ -88,11 +88,24 @@ class AuthManager extends Controller
         ]);
         
         if(Auth::attempt($credentials)){
-            $request->session()->regenerate();
 
-            notify()->success('signup successfully');
-            return redirect()->route('home');
+            if(Auth::user()->status == "active"){
+                
+                $request->session()->regenerate();
+
+                notify()->success('signup successfully');
+                return redirect()->route('home');
+
+            }
+
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            notify()->success('account not found');
+            return redirect()->route('signin');
         }
+        
         return redirect(route('signin'))->with('error', 'signin details are not valid');
     }
 
