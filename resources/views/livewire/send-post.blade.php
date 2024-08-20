@@ -56,8 +56,41 @@
     <div style="padding: 10px" class="card-body">
       <div class="row g-3">
 
+        {{-- START copy link --}}
+        <script>
+            function copyContent{{$postId}}() {
+                let text = "https://social.thezoom.ir/p/{{$postId}}";
+
+                navigator.clipboard.writeText(text)
+                    .then(() => {
+                        console.log('Content {{$postId}} copied to clipboard');
+                    })
+                    .catch(err => {
+                        console.error('Failed to copy: ', err);
+                    });
+            }
+        </script>
+
+        <div class="col-3 col-sm-3 col-lg-3 mb-5  d-flex justify-content-around">
+            <div class="d-flex align-items-center position-relative">
+                <div class="avatar">
+                    <!-- Avatar -->
+                    <button style="border: 1px solid; padding: 12px; border-radius: 100%" onclick="copyContent{{$postId}}()" >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-copy" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1z"/>
+                        </svg>
+                    </button>
+                    
+                    <div class="overflow-hidden mt-2">
+                        <p class="mb-0 small text-truncate text-center">copy<br>link</p>
+                    </div>  
+                </div>
+            </div>
+        </div>
+        {{-- END copy link --}}
+
         @foreach ($select_user_info as $select)
-            <div class="col-3 col-sm-3 col-lg-3 mb-5 ">
+            <div class="col-3 col-sm-3 col-lg-3 mb-5  d-flex justify-content-around">
                 <div class="d-flex align-items-center position-relative">
                     <div class="avatar">
                         <!-- Avatar -->

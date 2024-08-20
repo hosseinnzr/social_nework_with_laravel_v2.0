@@ -44,7 +44,7 @@
             <!-- Card header END -->
 
             <!-- show post START -->
-            <div class="card-body">
+            <div class="card-header">
                 <div class="row g-3">
 
                 <div class="col-12 col-lg-6">
