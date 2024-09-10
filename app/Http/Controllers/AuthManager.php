@@ -18,47 +18,51 @@ class AuthManager extends Controller
     function profile(Request $request, $user_name){
         if(auth::check()){
             if(User::where('user_name', $user_name)->exists()){
-                $user = User::where('user_name', $user_name)->first();
-                $posts = Post::latest()->where('delete', 0)->where('UID', $user->id)->get();
+                if(User::where('user_name', $user_name)->first()['status'] == 'active'){
+                    $user = User::where('user_name', $user_name)->first();
+                    $posts = Post::latest()->where('delete', 0)->where('UID', $user->id)->get();
 
-                $save_posts_id = explode(',', $user->save_post);
-                $save_posts = Post::latest()->whereIn('id', $save_posts_id)->get();
+                    $save_posts_id = explode(',', $user->save_post);
+                    $save_posts = Post::latest()->whereIn('id', $save_posts_id)->get();
 
 
-                foreach ($save_posts as $save_post) {
-                    $find_user = User::where('id', $save_post->UID)->select('id', 'user_name', 'profile_pic')->first();
-                    $save_post['user_id'] = $find_user['id'];
-                    $save_post['user_name'] = $find_user['user_name'];
-                    $save_post['user_profile_pic'] = $find_user['profile_pic'];
+                    foreach ($save_posts as $save_post) {
+                        $find_user = User::where('id', $save_post->UID)->select('id', 'user_name', 'profile_pic')->first();
+                        $save_post['user_id'] = $find_user['id'];
+                        $save_post['user_name'] = $find_user['user_name'];
+                        $save_post['user_profile_pic'] = $find_user['profile_pic'];
+                    }
+
+                    if(isset($request->tag)){
+                        $result = array();
+                        foreach ($posts as $post) {
+                            $post_array = explode(',', $post['tag']);
+                            if ((in_array($request->tag, $post_array)) != false){
+                                array_push($result, $post);
+                            }
+                            $posts=$result;
+                        } 
+                    }
+
+                    $user_follower = explode(",", $user->followers);
+                    $user_following = explode(",", $user->following);
+
+                    $follower_user = User::whereIn('id', $user_follower)->select('user_name', 'first_name', 'last_name', 'profile_pic')->get();
+                    $following_user = User::whereIn('id', $user_following)->select('user_name', 'first_name', 'last_name', 'profile_pic')->get();
+
+                    // dd($user);
+                    
+                    return view('profile', [
+                        'save_posts' => $save_posts,
+                        'posts' => $posts,
+                        'user' => $user,
+                        'follower_user' => $follower_user,
+                        'following_user' => $following_user,
+                    ]);   
+                }else{
+                    notify()->error('user not found');
+                    return back();
                 }
-
-                if(isset($request->tag)){
-                    $result = array();
-                    foreach ($posts as $post) {
-                        $post_array = explode(',', $post['tag']);
-                        if ((in_array($request->tag, $post_array)) != false){
-                            array_push($result, $post);
-                        }
-                        $posts=$result;
-                    } 
-                }
-
-                $user_follower = explode(",", $user->followers);
-                $user_following = explode(",", $user->following);
-
-                $follower_user = User::whereIn('id', $user_follower)->select('user_name', 'first_name', 'last_name', 'profile_pic')->get();
-                $following_user = User::whereIn('id', $user_following)->select('user_name', 'first_name', 'last_name', 'profile_pic')->get();
-
-                // dd($user);
-                
-                return view('profile', [
-                    'save_posts' => $save_posts,
-                    'posts' => $posts,
-                    'user' => $user,
-                    'follower_user' => $follower_user,
-                    'following_user' => $following_user,
-                ]);   
-
             }else{
                 notify()->error('user not found');
                 return back();
