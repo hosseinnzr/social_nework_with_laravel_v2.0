@@ -11,8 +11,6 @@ use App\Models\notifications;
 use Exception;
 
 
-
-
 class AuthManager extends Controller
 {
     function profile(Request $request, $user_name){
@@ -181,7 +179,6 @@ class AuthManager extends Controller
 
         $request->validate([
             'user_name' => 'required|unique:users,user_name,' . $user->id,
-            'email' => 'required|email|unique:users,email,' . $user->id,
             'phone' => 'required|max:11|unique:users,phone,' . $user->id,
         ]);
 
@@ -193,7 +190,6 @@ class AuthManager extends Controller
             'first_name',
             'last_name',
             'user_name',
-            'email',
             'phone',
             'additional_name'
         ]);

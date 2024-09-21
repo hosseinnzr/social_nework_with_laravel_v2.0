@@ -59,10 +59,10 @@ class ForgetPassword extends Component
             }
     
         // Current password and new password same
-        //     if (strcmp($validated['current_password'], $validated['new_password']) == 0) 
-        //     {
-        //         return redirect()->back()->with("error", "New Password cannot be same as your current password.");
-        //     }
+            if (strcmp($validated['current_password'], $validated['new_password']) == 0) 
+            {
+                return redirect()->back()->with("error", "New Password cannot be same as your current password.");
+            }
     
             $user = User::where('email', $this->email)->first();
             $user->password = Hash::make($validated['new_password']);

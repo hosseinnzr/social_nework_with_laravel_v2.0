@@ -108,15 +108,14 @@
 
             <!-- Account settings tab START -->
             <div class="tab-pane show active fade" id="nav-setting-tab-1">
-              <!-- Account settings START -->
+              <!-- General settings START -->
               <div class="card mb-4">
                 
-                <!-- Title START -->
+                <!-- Title General Settings -->
                 <div class="card-header border-0 pb-0">
-                  <h1 class="h5 card-title">Account Settings</h1>
+                  <h1 class="h5 card-title">General Settings</h1>
                 </div>
-                <!-- Card header START -->
-                <!-- Card body START -->
+                <!-- Body General Settings -->
                 <div class="card-body">
                   <!-- Form settings START -->
                   <form  method="POST" action="{{ route('settings.post') }}" class="row g-3" enctype="multipart/form-data">
@@ -187,15 +186,15 @@
                       <p class="text-red-500 text-xs mt-1">{{$message}}</p>
                       @enderror
                     </div>
-                    <!-- Phone number -->
-                    <div class="col-sm-6">
+                    <!-- email number -->
+                    {{-- <div class="col-sm-6">
                       <label class="form-label">Email</label>
                       <input name="email" type="text" class="form-control" placeholder="" value="{{ Auth::user()->email  ?? old('email ')}}">
                     
                       @error('email')
                       <p class="text-red-500 text-xs mt-1">{{$message}}</p>
                       @enderror
-                    </div>
+                    </div> --}}
                     <!-- Page information -->
                     <div class="col-12">
                       <label class="form-label">Biography</label>
@@ -209,17 +208,36 @@
                     <!-- Button  -->
                     <div class="col-12 text-end">
                       <button type="submit">
-                        <div  class="btn btn-primary">Save changes</div>
+                        <div class="btn btn-primary">Save changes</div>
                       </button>
                     </div>
                   </form>
                   <!-- Settings END -->
                 </div>
-              <!-- Card body END -->
-            </div>
-            <!-- Account settings END -->
 
-          </div>
+              <!-- Card body END -->
+              </div>
+              <!-- General settings END -->
+
+              <!-- Email Update START -->
+              <div class="card mb-4">
+                
+                <!-- Title Email Update -->
+                <div class="card-header border-0 pb-0">
+                  <h1 class="h5 card-title">Email Update</h1>
+                </div>
+
+                <!-- Body Email Update -->
+                <div class="card-body">
+
+                  @livewire('update-email')
+
+                </div>
+
+              <!-- Card body END -->
+              </div>
+
+            </div>
 
             <!-- Notification tab START -->
             <div class="tab-pane fade" id="nav-setting-tab-2">
