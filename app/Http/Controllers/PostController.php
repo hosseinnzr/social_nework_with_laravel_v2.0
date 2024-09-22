@@ -46,7 +46,7 @@ class PostController extends Controller
                 $result = array();
                 foreach ($posts as $post) {
                     $post_array = explode(',', $post['tag']);
-                    if ((in_array('#'.$request->tag, $post_array)) != false){
+                    if ((in_array('#'.$request->tag, $post_array)) == true){
                         array_push($result, $post);
                     }
                     $posts=$result;
@@ -70,6 +70,56 @@ class PostController extends Controller
                 'following_user' => $following_user,
                 'new_users' => $new_users,
                 'storys' => $storys,
+            ]);    
+            
+        } else {
+            return redirect()->route('signin');
+        }
+    }
+
+    public function explore(Request $request){
+        if(auth::check()){
+
+            $user_following = explode(",", Auth::user()->following);
+            $user_follower = explode(",", Auth::user()->followers);
+
+            $signin_user_id = Auth::id();
+
+            $new_users = User::all()->sortByDesc('id')->whereNotIn('id', $user_following)->whereNotIn('id', $user_follower)->where('id', '!=', $signin_user_id)->take(5);
+
+            $posts = Post::latest()->where('delete', 0)->get();
+
+            $hash_tag = null;
+            
+            if(isset($request->tag)){
+                $hash_tag = $request->tag;
+                $result = array();
+                foreach ($posts as $post) {
+                    $post_array = explode(',', $post['tag']);
+                    if ((in_array($request->tag, $post_array)) == true){
+                        array_push($result, $post);
+                    }
+                    $posts=$result;
+                } 
+            }
+
+            
+            foreach ($posts as $post) {
+                $user = User::where('id', $post->UID)->select('id', 'user_name', 'profile_pic')->first();
+                $post['user_id'] = $user['id'];
+                $post['user_name'] = $user['user_name'];
+                $post['user_profile_pic'] = $user['profile_pic'];
+            }
+
+            $follower_user = User::whereIn('id', $user_follower)->select('user_name', 'first_name', 'last_name', 'profile_pic')->get();
+            $following_user = User::whereIn('id', $user_following)->select('user_name', 'first_name', 'last_name', 'profile_pic')->get();
+
+            return view('pages.explore', [
+                'hash_tag' => $hash_tag,
+                'posts' => $posts,
+                'follower_user' => $follower_user,
+                'following_user' => $following_user,
+                'new_users' => $new_users,
             ]);    
             
         } else {

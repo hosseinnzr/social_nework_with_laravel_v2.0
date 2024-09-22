@@ -52,6 +52,12 @@
 					</a>
 				</li>
 
+        <li class="nav-item ms-2">
+					<a class="nav-link icon-md btn btn-light p-0" href="{{ route('explore')}}">
+						<i class="bi bi-compass-fill fs-6"> </i>
+					</a>
+				</li>
+
         <li class="nav-item dropdown ms-2">
           <a class="nav-link icon-md btn btn-light p-0" href="#" id="notifDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
               <i class="bi bi-bell-fill fs-6"> </i>

@@ -29,6 +29,9 @@ Route::middleware(['web', 'throttle:600,1'])->group(function () {
     // Home page
     Route::get('/', [PostController::class, "home"])->name('home');
 
+    // Home page
+    Route::get('/explore', [PostController::class, "explore"])->name('explore');
+
     // Edit User
     Route::get('/settings', [AuthManager::class, "settings"])->name('settings');
     Route::post('/settings', [AuthManager::class, "update"])->name('settings.post');
