@@ -754,10 +754,11 @@
                     <div style="width: 50%">
                       <select class="form-select" name="why" id="reasonSelect">
                         <option selected>choese one</option>
-                        <option>دوست دارم</option>
-                        <option>به توچه</option>
-                        <option>همینجوری برای خنده</option>
-                        <option>همه موارد</option>
+                        <option>Security concerns</option>
+                        <option>time consuming</option>
+                        <option>Having another user account</option>
+                        <option>Use another social network</option>
+                        <option>Other reasons</option>
                       </select>
                     </div>
 
