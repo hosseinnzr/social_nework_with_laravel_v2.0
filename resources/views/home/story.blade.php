@@ -21,16 +21,15 @@
 
         </head>
 
-        <body>
+        <body style="overflow: hidden;">
         <section id="tranding">
-            <div class="container">
-            
-
+            <div>
+        
                 <div style="color: rgb(102, 102, 102);" class="swiper-button-prev">
                     <ion-icon name="back-outline"></ion-icon>
                 </div>
 
-                <div style="max-width: 100%" class="swiper tranding-slider">
+                <div style="max-width: 100%; margin: 13px" class="swiper tranding-slider">
                     <div class="swiper-wrapper">
 
                         @foreach ($all_story as $story)
