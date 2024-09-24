@@ -200,16 +200,17 @@
               
               <!-- Card body START -->
               <div class="card-body">
-                  <p class="mb-0">{{$post['post']}}</p>
-                  <br>
-                  
                   @isset($post['post_picture'])
                   <img class="card-img" src="{{$post['post_picture']}}" alt="Post">
                   <br>    
                   @endisset 
+
+                  <p class="mb-0">{{$post['post']}}</p>
                   
                   @foreach(explode(",", $post['tag']) as $tag)
-                  <a href="/?tag={{str_replace('#', '', $tag)}}">{{$tag}} </a>
+                    @if ($tag != '')
+                      <a href="/explore/?tag={{str_replace('#', '', $tag)}}">#{{$tag}} </a>
+                    @endif
                   @endforeach
               </div>
               <!-- Card body END -->
