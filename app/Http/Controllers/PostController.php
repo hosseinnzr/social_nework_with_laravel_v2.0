@@ -87,7 +87,7 @@ class PostController extends Controller
 
             $new_users = User::all()->sortByDesc('id')->whereNotIn('id', $user_following)->whereNotIn('id', $user_follower)->where('id', '!=', $signin_user_id)->take(5);
 
-            $posts = Post::latest()->where('delete', 0)->get();
+            $posts = Post::latest()->where('delete', 0)->where('UID', '!=', auth::id())->get();
 
             $hash_tag = null;
             
@@ -207,7 +207,7 @@ class PostController extends Controller
             $user->save();
 
             // Organize hash tag
-            $inputs['tag'] = substr(str_replace(',,', ',', str_replace('#', ',#',str_replace(' ', '', $inputs['tag']))), 1);
+            $inputs['tag'] = substr(str_replace(',,', ',', str_replace('#', ',',str_replace(' ', '', $inputs['tag']))), 1);
 
             notify()->success('Add post successfully!');
           
@@ -262,7 +262,7 @@ class PostController extends Controller
             }
 
             // Organize hash tag
-            $inputs['tag'] = substr(str_replace(',,', ',', str_replace('#', ',#',str_replace(' ', '', $inputs['tag']))), 1);
+            $inputs['tag'] = substr(str_replace(',,', ',', str_replace('#', ',',str_replace(' ', '', $inputs['tag']))), 1);
 
 
             $post = Post::findOrFail($request->id);
