@@ -17,7 +17,7 @@
     <div class="row g-4">
 
       <!-- Left sidebar START -->
-      <div style="position: -webkit-sticky; position: sticky; overflow-y: auto; z-index: 999;" class="col-lg-3 ">
+      <div class="col-3">
 
       </div>
       <!-- Left sidebar END -->
@@ -25,24 +25,11 @@
       <!-- Main content START -->
       <div style="margin: 0px; padding: 0px" class="col-md-8 col-lg-6 vstack gap-2">
 
-
-        <!-- Nav Search START -->
-        <div class="nav my-3 my-lg-3 flex flex-nowrap align-items-center pt-0 pt-lg-1">
-            <div class="nav-item w-100">
-
-                <form class="rounded position-relative">
-                    <input class="form-control bg-light" type="search" placeholder="Search..." aria-label="Search" wire:model.live="search">
-                </form>
-
-            </div>
-        </div>
-        <!-- Nav Search END -->
-
-
+        <br>
 
         <!-- Show hashtag START -->
         @if (isset($hash_tag))
-          <div style="margin: 20px 0px" class="card card-body">
+          <div class="card card-body mb-4">
             <ul class="nav nav-pills nav-stack small fw-normal">
               <li class="nav-item">
                 <a class="nav-link bg-light py-1 px-2 mb-0" data-bs-toggle="modal" data-bs-target="#feedActionPhoto"> <i class="bi bi-hash text-success pe-1"></i>{{$hash_tag}}</a>
