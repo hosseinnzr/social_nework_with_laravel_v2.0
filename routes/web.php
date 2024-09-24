@@ -37,7 +37,7 @@ Route::middleware(['web', 'throttle:600,1'])->group(function () {
     Route::post('/settings', [AuthManager::class, "update"])->name('settings.post');
 
     // Delete Post
-    Route::get('/delete', [PostController::class, "deletePost"])->name('delete');
+    Route::get('/delete', [PostController::class, "delete"])->name('post.delete');
 
     // Save post
     Route::post('/save', [PostController::class, "save"])->name('save.post');

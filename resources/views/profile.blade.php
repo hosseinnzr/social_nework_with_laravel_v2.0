@@ -174,7 +174,7 @@
                                       <li><a style="color: rgb(10, 0, 195)" class="dropdown-item" type="submit" href="{{ route('post', ['id' => $post['id']]) }}"> <i class="bi bi-pencil fa-fw pe-2"></i>Edit post</a></li>
                                       <li><a class="dropdown-item" href="/p/{{$post['id']}}"> <i class="bi bi-file-post-fill"></i> view post</a></li>
                                       <li><a class="dropdown-item" href="#"> <i class="bi bi-archive fa-fw pe-2"></i>Archive</a></li>
-                                      <li><a style="color: red" class="dropdown-item" type="submit" href="{{ route('delete', ['id' => $post['id']]) }}"> <i class="bi bi-x-circle fa-fw pe-2"></i>Delete post</a></li>
+                                      <li><a style="color: red" class="dropdown-item" type="submit" href="{{ route('post.delete', ['id' => $post['id']]) }}"> <i class="bi bi-x-circle fa-fw pe-2"></i>Delete post</a></li>
                                     </ul>
             
                                   </div>
@@ -332,7 +332,7 @@
                                           <li><a style="color: rgb(10, 0, 195)" class="dropdown-item" type="submit" href="{{ route('post', ['id' => $save_post['id']]) }}"> <i class="bi bi-pencil fa-fw pe-2"></i>Edit post</a></li>
                                           <li><a class="dropdown-item" href="/p/{{$save_post['id']}}"> <i class="bi bi-file-post-fill"></i> view post</a></li>
                                           <li><a class="dropdown-item" href="#"> <i class="bi bi-archive fa-fw pe-2"></i>Archive</a></li>
-                                          <li><a style="color: red" class="dropdown-item" type="submit" href="{{ route('delete', ['id' => $save_post['id']]) }}"> <i class="bi bi-x-circle fa-fw pe-2"></i>Delete post</a></li>
+                                          <li><a style="color: red" class="dropdown-item" type="submit" href="{{ route('post.delete', ['id' => $save_post['id']]) }}"> <i class="bi bi-x-circle fa-fw pe-2"></i>Delete post</a></li>
                                         </ul>
                                         @else
                                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardShareAction8">
