@@ -45,12 +45,12 @@
                             <div class="d-flex justify-content-between">
                                 <div>
                                     <!-- name -->
-                                    <a style="color: black" class="mb-0" href="/explore/?tag={{$hashtag['name']}}">{{$hashtag['name']}}</a>
+                                    <a class="mb-0 small text-truncate" href="/explore/?tag={{$hashtag['name']}}">{{$hashtag['name']}}</a>
                                 </div>
                                 
                                 <div>
                                     <!-- number -->
-                                    <p style="color: black" class="mb-0">{{$hashtag['number']}}</p>
+                                    <p class="mb-0 small text-truncate">{{$hashtag['number']}}</p>
                                 </div>
                                 
                             </div>

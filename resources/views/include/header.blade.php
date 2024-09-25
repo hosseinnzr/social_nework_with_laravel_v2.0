@@ -13,11 +13,7 @@
 
 			<!-- Responsive navbar toggler -->
 			<button class="navbar-toggler ms-auto icon-md btn btn-light p-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-animation">
-          <span></span>
-          <span></span>
-          <span></span>
-        </span>
+        <i class="bi bi-search"></i>
       </button>
 
       <!-- Nav Search START -->
