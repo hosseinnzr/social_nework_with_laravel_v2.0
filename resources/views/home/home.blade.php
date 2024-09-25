@@ -107,7 +107,7 @@
               @if (isset($storys))
                 @foreach ($storys as $story)
                   <div style="padding: 0%" class="position-relative text-center">
-                    <div class="avatar avatar-lg avatar-story">
+                    <div style="padding: 3px; background: linear-gradient(220deg, #2f4bd2, #ac3ec3, #ea4147, #eaba41, #ffd06a); border-radius: 50%" class="avatar avatar-lg">
                       <a href="/story?user={{$story['user_name']}}"><img class="avatar-img rounded-circle" src="{{$story['user_profile_pic']}}" alt=""></a>
                     </div>
                     <div>

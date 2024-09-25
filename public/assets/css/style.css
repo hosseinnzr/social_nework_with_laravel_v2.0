@@ -15951,7 +15951,7 @@ a.badge:hover {
 
 .avatar-story {
   position: relative;
-  padding: 4px;
+  padding: 3px;
   z-index: 1;
 }
 .avatar-story:after {
@@ -15962,7 +15962,7 @@ a.badge:hover {
   height: 100%;
   width: 100%;
   border-radius: 50%;
-  border: 2px solid #0f6fec;
+  border: 2px solid #3E46D2;/*  avatar-story color */
   z-index: -1;
 }
 
