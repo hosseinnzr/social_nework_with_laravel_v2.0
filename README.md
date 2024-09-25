@@ -1,6 +1,7 @@
 ## for use crop img
 composer require intervention/image
 install gd in windows and enable extention in xammp
+composer require simplesoftwareio/simple-qrcode "~4"
 
 php artisan storage:link
 

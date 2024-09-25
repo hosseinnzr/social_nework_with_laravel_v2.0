@@ -10,6 +10,8 @@ use App\Models\Post;
 use App\Models\notifications;
 use Exception;
 
+use SimpleSoftwareIO\QrCode\Facades\QrCode as QR;
+
 
 class AuthManager extends Controller
 {
@@ -48,7 +50,7 @@ class AuthManager extends Controller
                     $follower_user = User::whereIn('id', $user_follower)->select('user_name', 'first_name', 'last_name', 'profile_pic')->get();
                     $following_user = User::whereIn('id', $user_following)->select('user_name', 'first_name', 'last_name', 'profile_pic')->get();
 
-                    // dd($user);
+                    $qr_code = QR::size(200)->generate('https://social.thezoom.ir/user/'.auth::user()['user_name']);
                     
                     return view('profile', [
                         'save_posts' => $save_posts,
@@ -56,6 +58,7 @@ class AuthManager extends Controller
                         'user' => $user,
                         'follower_user' => $follower_user,
                         'following_user' => $following_user,
+                        'qr_code' => $qr_code,
                     ]);   
                 }else{
                     notify()->error('user not found');
