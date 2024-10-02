@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthManager;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\StoryControllers;
@@ -59,6 +60,9 @@ Route::middleware(['web', 'throttle:600,1'])->group(function () {
 
     // forgetPassword
     Route::get('/forgot-password', [AuthManager::class, 'forgotPassword'])->name('forgot-password');
+
+    // notifications
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications');
 
     
     // profile
