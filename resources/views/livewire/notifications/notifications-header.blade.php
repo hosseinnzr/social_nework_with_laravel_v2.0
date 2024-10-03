@@ -77,10 +77,46 @@
                                         <div class="ms-sm-3">
                                             <div>
                                                 <div class="nav nav-divider">
-                                                    <p class="nav-item card-title mb-0"><b>new follow</b></p>
+                                                    <p class="nav-item card-title mb-0"><b>follow</b></p>
                                                     <span class="nav-item small"> {{$user_notification['created_at']->diffForHumans(null, true, true)}} ago</span>
                                                 </div>
                                                 <p class="nav-item small"><b>{{$user_notification->body}} </b>&nbsp;follow you</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Card feed action dropdown START -->
+                                    <div class="dropdown">
+                                        <a href="#" class="text-secondary btn btn-secondary-soft-hover py-1 px-2" id="cardFeedAction" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="bi bi-three-dots"></i>
+                                        </a>
+                                        <!-- Card feed action dropdown menu -->
+                                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction">
+                                            <li>        
+                                                <button class="dropdown-item" wire:click="delete({{$user_notification->id}})"><i class="bi bi-eye-slash"> </i> Hide this notification</a></button>
+                                            </li>        
+                                        </ul>
+                                    </div>
+                                    <!-- Card feed action dropdown END -->
+
+                                </div>
+                            </li>
+                            <!-- follow Notif END -->
+                        @elseif ($user_notification->type == 'follow_request')
+                            <!-- follow Notif START -->
+                            <li>
+                                <div style="background-color: rgba(97, 97, 97, 0.088)" class="list-group-item rounded d-flex border-0 mb-1 p-3 justify-content-between">
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar text-center d-none d-sm-inline-block">
+                                            <img class="avatar-img rounded-circle" src="{{$user_notification->user_profile}}" alt="">
+                                        </div>
+                                        <div class="ms-sm-3">
+                                            <div>
+                                                <div class="nav nav-divider">
+                                                    <p class="nav-item card-title mb-0"><b>follow request</b></p>
+                                                    <span class="nav-item small"> {{$user_notification['created_at']->diffForHumans(null, true, true)}} ago</span>
+                                                </div>
+                                                <p class="nav-item small"><b>{{$user_notification->body}} </b>&nbsp;send follow request</p>
                                             </div>
                                             
                                             <div class="d-flex">
