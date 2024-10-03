@@ -162,7 +162,12 @@
                                           </div>
                                           
                                           <div class="d-flex">
+
+                                            <form action="{{route('acceptRequest', ['userName' => $user_notification->body])}}" method="POST">
+                                              @csrf
                                               <button class="btn btn-sm py-1 btn-primary me-2">Accept </button>
+                                            </form>
+
                                               <button class="btn btn-sm py-1 btn-danger-soft">Delete </button>
                                           </div>
                                       </div>

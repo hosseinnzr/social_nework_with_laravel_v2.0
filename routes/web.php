@@ -18,6 +18,11 @@ Route::middleware(['web', 'throttle:600,1'])->group(function () {
 
     // follow
     Route::post('/follow/{id}', [AuthManager::class, 'follow'])->name('follow');
+    Route::post('/unfollow/{id}', [AuthManager::class, 'unfollow'])->name('unfollow');
+
+    // follow request
+    Route::post('/accept-request/{userName}', [AuthManager::class, 'acceptRequest'])->name('acceptRequest');
+    Route::post('/delete-request/{userName}', [AuthManager::class, 'deleteRequest'])->name('deleteRequest');
 
     // Add / Edit Post
     Route::get('/post', [PostController::class, "postRoute"])->name('post');

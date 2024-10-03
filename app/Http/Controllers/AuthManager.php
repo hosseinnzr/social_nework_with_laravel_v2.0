@@ -75,6 +75,70 @@ class AuthManager extends Controller
         }
     }
 
+
+    // follow request
+    function acceptRequest($userName){
+        $user_signin = User::findOrFail(auth::id());
+        $user = User::where('user_name', $userName)->first();
+
+        $followers = $user_signin->followers . ',' . $user->id;
+        $followings = $user->following . ',' . $user_signin->id;
+        $user_request_lists = explode(",", $user->request_list);
+
+        foreach($user_request_lists as $user_request_list){
+            if ($user_request_list == $userName){
+
+                $new_request_lists = array_diff($user_request_lists, array($userName));
+
+                $user_request_lists = implode(",", $new_request_lists);
+
+                break;
+            }
+        }
+
+        $user_signin->request_list = $user_request_lists;
+        
+        // send notifiction
+        notifications::create([
+            'UID' => $user_signin->id,
+            'body' => $user->user_name,
+            'type'=> 'accept Request',
+            'url' => '',
+            'user_profile' => Auth::user()->profile_pic,
+        ]);
+
+        $followers = array_unique(explode(",", $followers));
+        $followings = array_unique(explode(",", $followings));
+
+        $followers = implode(",", $followers);
+        $followings = implode(",", $followings);
+
+        // save follow
+        $user_signin->followers = $followers;
+        $user->following = $followings;
+
+        if ($user->followers == "0"){
+            $followers_number = 1;
+        }else{
+            $followers_number = count(explode(",", $user->followers));
+        }
+
+        if ($user_signin->following == "0"){
+            $following_number = 1;
+        }else{
+            $following_number = count(explode(",", $user_signin->following));
+        }
+
+        $user->followers_number = $followers_number -1;
+        $user_signin->following_number = $following_number -1;
+
+        $user_signin->save();
+        $user->save();
+
+        return back();
+    }
+
+
     // signin / signUp / logout
     function signin(){
         if(auth::check()){
@@ -229,6 +293,81 @@ class AuthManager extends Controller
 
     // follow
     public function follow($id){ 
+        $user_signin = User::findOrFail(auth::id());
+        $user = User::findOrFail($id);
+
+        if($user['privacy'] == 'public'){
+            $followers = $user->followers . ',' . $user_signin->id;
+            $followings = $user_signin->following . ',' . $user->id;
+            
+            // send notifiction
+            notifications::create([
+                'UID' => $user->id,
+                'body' => Auth::user()->user_name,
+                'type'=> 'follow',
+                'url' => '',
+                'user_profile' => Auth::user()->profile_pic,
+            ]);
+
+            $followers = array_unique(explode(",", $followers));
+            $followings = array_unique(explode(",", $followings));
+
+            $followers = implode(",", $followers);
+            $followings = implode(",", $followings);
+
+            // save follow
+            $user_signin->following = $followings;
+            $user->followers = $followers;
+
+            if ($user->followers == "0"){
+                $followers_number = 1;
+            }else{
+                $followers_number = count(explode(",", $user->followers));
+            }
+
+            if ($user_signin->following == "0"){
+                $following_number = 1;
+            }else{
+                $following_number = count(explode(",", $user_signin->following));
+            }
+
+            $user->followers_number = $followers_number -1;
+            $user_signin->following_number = $following_number -1;
+
+            $user_signin->save();
+            $user->save();
+
+            return back();
+        }elseif($user['privacy'] == 'private'){
+            $request_list = $user->request_list . ',' . $user_signin->id;
+            
+            // send notifiction
+            notifications::create([
+                'UID' => $user->id,
+                'body' => Auth::user()->user_name,
+                'type'=> 'follow_request',
+                'url' => '',
+                'user_profile' => Auth::user()->profile_pic,
+            ]);
+
+            $request_list = array_unique(explode(",", $request_list));
+
+            $request_list = implode(",", $request_list);
+
+            // save request
+            $user->request_list = $request_list;
+
+            $user->save();
+
+            return back();
+        }
+
+
+
+    }
+
+    // unfollow
+    public function unfollow($id){ 
         $is_follow = false;
         $user_signin = User::findOrFail(auth::id());
         $user = User::findOrFail($id);

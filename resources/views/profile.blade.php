@@ -32,8 +32,15 @@
                   </div>
                 </div>
                 <div class="ms-sm-4 mt-sm-3">
+
                   <!-- Info -->
-                  <h1 class="mb-0 h5">{{$user['first_name']}} {{$user['last_name']}}</h1>
+                  <div class="hstack gap-2 gap-xl-3">
+                    <div>
+                      <h2 class="mb-0">{{$user['user_name']}}</h2>
+                      <small>{{$user['first_name']}} {{$user['last_name']}} . {{$user['privacy']}}</small>
+                    </div>
+                  </div>
+
                   <br>
                   <!-- post, follow, following START -->
                     <x-post-follower-following :user="$user"/>
@@ -70,7 +77,7 @@
 
                   @elseif ( in_array(auth()->id(), explode(",", $user['followers'])) )    
 
-                    <form action="{{route('follow', ['id' => $user['id']])}}" method="POST" class="ms-auto me-auto mt-3">
+                    <form action="{{route('unfollow', ['id' => $user['id']])}}" method="POST" class="ms-auto me-auto mt-3">
                       @csrf
                       <button type="submit" class="btn btn-primary-soft me-2"><i class="fa fa-user"></i> unfollow</button>
                     </form>
@@ -80,11 +87,18 @@
                       <button type="submit" class="btn btn-success-soft me-2"><i class="fa bi-chat-left-text-fill"></i> message</button>
                     </form>
 
-                  @else 
+                  @elseif ( in_array(auth()->id(), explode(",", $user['request_list'])) )
 
                     <form action="{{route('follow', ['id' => $user['id']])}}" method="POST" class="ms-auto me-auto mt-3">
                       @csrf
-                      <button type="submit" class="btn btn-primary-soft me-2"><i class="fa fa-user"></i> follow</button>
+                      <button type="submit" class="btn btn-secondary-soft me-2">Requested</button>
+                    </form> 
+
+                  @else
+
+                    <form action="{{route('follow', ['id' => $user['id']])}}" method="POST" class="ms-auto me-auto mt-3">
+                      @csrf
+                      <button type="submit" class="btn btn-primary-soft me-2">follow</button>
                     </form> 
                     
                   @endif
@@ -111,12 +125,15 @@
                 @endif
               </ul>
               
-              <br>
               <!-- Tab nav line START -->
-              <ul class="nav nav-tabs nav-bottom-line justify-content-center justify-content-md-start">
-                <li class="nav-item"> <a class="nav-link active" data-bs-toggle="tab" href="#tab-1"> Your post </a> </li>
-                <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#tab-2"> Save post </a> </li>
-              </ul>
+              @if ($user['user_name'] == auth()->user()->user_name)
+                <br>
+                <ul class="nav nav-tabs nav-bottom-line justify-content-center justify-content-md-start">
+                  <li class="nav-item"> <a class="nav-link active" data-bs-toggle="tab" href="#tab-1"> Your post </a> </li>
+
+                  <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#tab-2"> Save post </a> </li>
+                </ul>
+              @endif
               <!-- Tab nav line START -->
               
         <!-- My profile END -->
@@ -127,6 +144,7 @@
               <!-- Album Tab content START -->
               <div class="tab-content mb-0 pb-0">
   
+                @if ($user['user_name'] == auth()->user()->user_name || $user['privacy'] == 'public' || in_array(auth()->id(), explode(",", $user['followers'])))
                 <!-- your post tab START -->
                 <div class="tab-pane fade show active" id="tab-1">
                   <div class="row g-3">
@@ -280,7 +298,9 @@
 
                 </div>
                 <!-- your post tab END -->
-  
+                @endif
+
+                @if ($user['user_name'] == auth()->user()->user_name)
                 <!-- Save photos tab START -->
                 <div class="tab-pane fade" id="tab-2">
                   <div class="row g-3">
@@ -445,7 +465,8 @@
                   </div>
                 </div>
                 <!-- Save photos tab END -->
-                
+                @endif
+
               </div>
   
             <!-- Album Tab content END -->
