@@ -14,16 +14,13 @@
                 <!-- add comment START -->
 
                 <form wire:submit="save({{$postId}})" >
-                <label>             
-                    <input wire:model="comment" name="comment" id="cmnt-input" class="form-control py-2 w-full" type="text" placeholder="Add Comment ..." aria-label="Search" value="">
-                </label>
+                    <label>             
+                        <input wire:model="comment" name="comment" id="cmnt-input" class="form-control py-2 w-full" type="text" placeholder="Add a comment…" aria-label="Search">
+                    </label>
+
                     <button class="btn btn-light" id="cmnt-btn" type="submit">  <i class="fa-solid fa-comment"></i></button>
                 </form>
-                <script>
-                document.getElementById('cmnt-btn').addEventListener('click', function() {
-                    document.getElementById('cmnt-input').value = "";
-                })
-                </script>
+
             </div>
         </div>
         <!-- Comment box END -->
@@ -60,7 +57,10 @@
                             </div>    
 
                             </div>
-                            <p style="max-width: 30ch;" class="small mb-0">{{$single_comment['comment_value']}}</p>
+                            <p style="max-width: 30ch; word-wrap: break-word; overflow-wrap: break-word;" class="small mb-0">
+                                {{$single_comment['comment_value']}}
+                            </p>
+                            
                         </div>
                     </div>
 

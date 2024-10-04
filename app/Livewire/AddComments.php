@@ -39,6 +39,8 @@ class AddComments extends Component
         if($input['comment_value'] != null){
             Comments::create($input);
         }
+
+        $this->comment = '';
     }
 
     public function loadMore(){
