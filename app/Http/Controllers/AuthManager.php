@@ -83,20 +83,23 @@ class AuthManager extends Controller
 
         $followers = $user_signin->followers . ',' . $user->id;
         $followings = $user->following . ',' . $user_signin->id;
-        $user_request_lists = explode(",", $user->request_list);
+        $user_request = $user->request_list;
+
+        $user_request_lists = explode(",", $user_request);
 
         foreach($user_request_lists as $user_request_list){
             if ($user_request_list == $userName){
-
+                
                 $new_request_lists = array_diff($user_request_lists, array($userName));
 
-                $user_request_lists = implode(",", $new_request_lists);
+                $user_request = implode(",", $new_request_lists);
 
                 break;
             }
         }
 
-        $user_signin->request_list = $user_request_lists;
+
+        $user_signin->request_list = $user_request;
         
         // send notifiction
         notifications::create([
@@ -117,20 +120,20 @@ class AuthManager extends Controller
         $user_signin->followers = $followers;
         $user->following = $followings;
 
-        if ($user->followers == "0"){
+        if ($user_signin->followers == "0"){
             $followers_number = 1;
         }else{
-            $followers_number = count(explode(",", $user->followers));
+            $followers_number = count(explode(",", $user_signin->followers));
         }
 
-        if ($user_signin->following == "0"){
+        if ($user->following == "0"){
             $following_number = 1;
         }else{
-            $following_number = count(explode(",", $user_signin->following));
+            $following_number = count(explode(",", $user->following));
         }
 
-        $user->followers_number = $followers_number -1;
-        $user_signin->following_number = $following_number -1;
+        $user_signin->followers_number = $followers_number -1;
+        $user->following_number = $following_number -1;
 
         $user_signin->save();
         $user->save();
