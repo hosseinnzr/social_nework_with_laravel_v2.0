@@ -143,6 +143,7 @@ class AuthManager extends Controller
         $user_signin->save();
         $user->save();
 
+        notify()->success('accept follow request from '.$userName);
         return redirect('notifications');
     }
 
