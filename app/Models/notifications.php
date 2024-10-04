@@ -18,5 +18,6 @@ class notifications extends Model
         'type',
         'url',
         'seen',
+        'delete'
     ];
 }

@@ -116,6 +116,7 @@ class AuthManager extends Controller
         $followers = implode(",", $followers);
         $followings = implode(",", $followings);
 
+
         // save follow
         $user_signin->followers = $followers;
         $user->following = $followings;
