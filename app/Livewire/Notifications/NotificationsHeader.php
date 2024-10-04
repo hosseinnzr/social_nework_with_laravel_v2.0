@@ -14,10 +14,8 @@ class NotificationsHeader extends Component
     public function delete($notification_id){
         
         $notification = notifications::findOrFail($notification_id);
-        // dd($notification);
         $notification->seen = 1;
         $notification->save();
-        // dd($notification);
 
     }
 

@@ -21,6 +21,8 @@ class AddComments extends Component
 
     public $error;
 
+    public $show_load_more = true;
+
     public $amount = 5;
 
     public function save($postId){
@@ -40,7 +42,13 @@ class AddComments extends Component
     }
 
     public function loadMore(){
+        $comment_number = count(comments::latest()->where('post_id', $this->postId)->get());
+
         $this->amount += 5;
+
+        if($this->amount >= $comment_number){
+            $this->show_load_more = false;
+        }
     }
 
     public function like($single_comment)

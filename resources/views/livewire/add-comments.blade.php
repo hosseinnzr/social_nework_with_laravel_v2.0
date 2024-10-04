@@ -88,13 +88,17 @@
         <!-- Comment item END -->
         @endforeach
 
-        <br>
-        <li wire:click="loadMore()" class="comment-item">
-            <div>
-                <!-- Load more comments -->
-                  <button class="" style="padding:5px 8px 5px 8px; ">Load more commnent ... </button>
-            </div>
-        </li>
+        @if ($show_load_more)
+            <br>
+            <li wire:click="loadMore()" class="comment-item">
+                <div class="d-flex justify-content-center bg-light m-2 rounded">
+                    <div>
+                        <!-- Load more comments -->
+                        <button style="padding:5px 8px 5px 8px; ">Load more ...</button>
+                    </div>
+                </div>
+            </li>
+        @endif
     </ul>
     <!-- Comment wrap END -->
     
