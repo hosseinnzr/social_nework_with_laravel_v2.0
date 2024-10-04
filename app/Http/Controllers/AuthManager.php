@@ -77,7 +77,7 @@ class AuthManager extends Controller
 
 
     // follow request
-    function acceptRequest($userName){
+    function acceptRequest(Request $request, $userName){
         $user_signin = User::findOrFail(auth::id());
         $user = User::where('user_name', $userName)->first();
 
@@ -110,6 +110,10 @@ class AuthManager extends Controller
             'user_profile' => Auth::user()->profile_pic,
         ]);
 
+        // delete request notifiction
+        $post = notifications::where('id', $request->notificationid);
+        $post->update(['delete' => 1]);
+
         $followers = array_unique(explode(",", $followers));
         $followings = array_unique(explode(",", $followings));
 
@@ -139,7 +143,7 @@ class AuthManager extends Controller
         $user_signin->save();
         $user->save();
 
-        return back();
+        return redirect('notifications');
     }
 
 
