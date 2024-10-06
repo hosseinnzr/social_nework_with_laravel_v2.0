@@ -169,7 +169,12 @@
                                               <button class="btn btn-sm py-1 btn-primary me-2">Accept </button>
                                             </form>
 
+                                            <form action="{{route('deleteRequest', ['userName' => $user_notification->body])}}" method="POST">
+                                              @csrf
+                                              <input name="notificationid" style="display: none" type="text" value="{{$user_notification->id}}">
                                               <button class="btn btn-sm py-1 btn-danger-soft">Delete </button>
+                                            </form>
+
                                           </div>
                                       </div>
                                   </div>

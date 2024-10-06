@@ -147,6 +147,38 @@ class AuthManager extends Controller
         return redirect('notifications');
     }
 
+    function deleteRequest(Request $request, $userName){
+        $user_signin = User::findOrFail(auth::id());
+        $user = User::where('user_name', $userName)->first();
+
+        $user_request = $user->request_list;
+
+        $user_request_lists = explode(",", $user_request);
+
+        foreach($user_request_lists as $user_request_list){
+            if ($user_request_list == $userName){
+                
+                $new_request_lists = array_diff($user_request_lists, array($userName));
+
+                $user_request = implode(",", $new_request_lists);
+
+                break;
+            }
+        }
+
+        // delete request notifiction
+        $post = notifications::where('id', $request->notificationid);
+        $post->update(['delete' => 1]);
+
+        $user_signin->request_list = $user_request;
+
+        $user_signin->save();
+        $user->save();
+
+        notify()->success('delete follow request from '.$userName);
+        return redirect('notifications');
+    }
+
 
     // signin / signUp / logout
     function signin(){
