@@ -277,7 +277,12 @@ class AuthManager extends Controller
 
     // edit / update
     public function settings(){
-        return view('settings');
+        if(auth::check()){
+            return view('pages.settings');
+        }else{
+            notify()->error('you not sign in');
+            return redirect()->route('signin');
+        }
     }
     public function update(Request $request){
 
