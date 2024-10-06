@@ -52,7 +52,7 @@ class AuthManager extends Controller
 
                     $qr_code = QR::size(200)->generate('https://social.thezoom.ir/user/'.auth::user()['user_name']);
                     
-                    return view('profile', [
+                    return view('pages.profile', [
                         'save_posts' => $save_posts,
                         'posts' => $posts,
                         'user' => $user,

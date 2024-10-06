@@ -89,7 +89,7 @@
 
                   @elseif ( in_array(auth()->id(), explode(",", $user['request_list'])) )
 
-                    <form action="{{route('follow', ['id' => $user['id']])}}" method="POST" class="ms-auto me-auto mt-3">
+                    <form action="" method="POST" class="ms-auto me-auto mt-3">
                       @csrf
                       <button type="submit" class="btn btn-secondary-soft me-2">Requested</button>
                     </form> 
