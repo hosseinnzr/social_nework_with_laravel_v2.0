@@ -1,10 +1,11 @@
 <div>
-    <div class="card">
-    {{-- <div class="card-header d-flex justify-content-between align-items-center">
-        <h6 class="m-0">Notifications <span class="badge bg-danger bg-opacity-10 text-danger ms-2">new</span></h6>
-        <a class="small" href="!#">refresh</a>
+    <div class="card" wire:poll.visible>
+    <div class="card-header d-flex justify-content-between align-items-center p-3">
+        {{-- <h6 class="m-0">Notifications <span class="badge bg-danger bg-opacity-10 text-danger ms-2">new</span></h6> --}}
+        <h6 class="m-0">Notifications</h6>
+        <a class="small" href="/notifications">See All</a>
         
-    </div> --}}
+    </div>
 
     
         @if ($user_notifications == '[]')
@@ -120,8 +121,11 @@
                                             </div>
                                             
                                             <div class="d-flex">
-                                                <button class="btn btn-sm py-1 btn-primary me-2">Accept </button>
-                                                <button class="btn btn-sm py-1 btn-danger-soft">Delete </button>
+                                              <button wire:click="acceptRequest({{$user_notification->id}})" 
+                                                class="btn btn-sm py-1 btn-primary me-2">Confirm</button>
+
+                                              <button wire:click="deleteRequest({{$user_notification->id}})" 
+                                                class="btn btn-sm py-1 btn-secondary-soft">Delete</button>
                                             </div>
                                         </div>
                                     </div>
@@ -134,7 +138,7 @@
                                         <!-- Card feed action dropdown menu -->
                                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction">
                                             <li>        
-                                                <button class="dropdown-item" wire:click="delete({{$user_notification->id}})"><i class="bi bi-eye-slash"> </i> Hide this notification</a></button>
+                                            <button class="dropdown-item" wire:click="acceptRequest({{$user_notification->id}}, {{$user_notification->id}})"><i class="bi bi-eye-slash"> </i> Hide this notification</a></button>
                                             </li>        
                                         </ul>
                                     </div>

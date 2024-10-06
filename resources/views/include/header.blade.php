@@ -60,12 +60,6 @@
           </a>
           <div class="dropdown-menu dropdown-animation dropdown-menu-end dropdown-menu-size-md p-0 shadow-lg border-0" aria-labelledby="notifDropdown">
 
-            <div class="card-header d-flex justify-content-between align-items-center p-3">
-              {{-- <h6 class="m-0">Notifications <span class="badge bg-danger bg-opacity-10 text-danger ms-2">4 new</span></h6> --}}
-              <h6 class="m-0">Notifications</h6>
-              <a class="small" href="/notifications">See All</a>
-            </div>
-
           @livewire('notifications.notifications-header')
           </div>
         </li>
