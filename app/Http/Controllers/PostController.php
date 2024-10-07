@@ -156,7 +156,7 @@ class PostController extends Controller
     }
     
     public function create(Request $request){
-            
+
         if (Auth::check()) {
 
             $request->validate([
@@ -209,7 +209,12 @@ class PostController extends Controller
             // Organize hash tag
             $inputs['tag'] = substr(str_replace(',,', ',', str_replace('#', ',',str_replace(' ', '', $inputs['tag']))), 1);
 
+            // update explore algorithm
+            $pythonFile = public_path('explore_Algorithm/explore_algorithm.py');
+            $output = shell_exec('C:\Users\nazar\AppData\Local\Programs\Python\Python312\python.exe '. $pythonFile);
+
             notify()->success('Add post successfully!');
+            // notify()->success($output);
           
             return redirect()->route('post.store', ['id'=> $post->id])
               ->with('success', true);
@@ -267,6 +272,10 @@ class PostController extends Controller
 
             $post = Post::findOrFail($request->id);
             $post->update($inputs);
+
+            // update explore algorithm
+            $pythonFile = public_path('explore_Algorithm/explore_algorithm.py');
+            $output = shell_exec('C:\Users\nazar\AppData\Local\Programs\Python\Python312\python.exe '. $pythonFile);
 
             notify()->success('Update post successfully!');
 
