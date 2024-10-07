@@ -1,10 +1,6 @@
 import os
 import sys
 import io
-
-# Set the default encoding to utf-8
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
-
 import numpy as np
 import pandas as pd
 from tensorflow.keras.applications.resnet50 import ResNet50, preprocess_input
@@ -12,6 +8,9 @@ from tensorflow.keras.preprocessing import image
 from sklearn.metrics.pairwise import cosine_similarity
 from concurrent.futures import ThreadPoolExecutor
 import pickle
+
+# Set the default encoding to utf-8
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 # مسیر تصاویر و فایل‌ها
 image_path = r'post-picture'
