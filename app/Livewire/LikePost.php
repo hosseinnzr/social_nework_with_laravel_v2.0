@@ -26,6 +26,9 @@ class LikePost extends Component
             $like = $user_liked_id;   
         }
 
+        $like = array_unique(explode(",", $like));
+        $like = implode(",", $like);
+
         // send notifiction
         if($post->UID != Auth::id()){
             notifications::create([
@@ -40,11 +43,12 @@ class LikePost extends Component
         // save like
         $post->like = $like;
 
-            if ($post->like == ""){
-                $like_number = 0;
-            }else{
-                $like_number = count(explode(",", $post->like));
-            }
+        if ($post->like == ""){
+            $like_number = 0;
+        }else{
+            $like_number = count(array_unique(explode(",", $post->like)));
+        }
+        
         
         // save like_number
         $post->like_number = $like_number;
@@ -67,7 +71,7 @@ class LikePost extends Component
 
         $post_liked_array = explode(",", $post_like);
 
-        $like = 0;
+        $like = null;
 
         foreach($post_liked_array as $like_number){
 
