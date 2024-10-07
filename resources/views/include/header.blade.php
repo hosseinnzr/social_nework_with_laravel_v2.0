@@ -36,25 +36,29 @@
 			<!-- Nav right START -->
 			<ul class="nav flex-nowrap align-items-center ms-sm-3 list-unstyled">
 
-				<li class="nav-item ms-2">
+        <!-- chat -->
+				<li class="nav-item ms-2" title="chat">
 					<a class="nav-link icon-md btn btn-light p-0" href="{{ route('chat') }}">
 						<i class="bi bi-chat-left-text-fill fs-6"> </i>
 					</a>
 				</li>
         
-        <li class="nav-item ms-2">
+        <!-- add post -->
+        <li class="nav-item ms-2" title="add post">
 					<a class="nav-link icon-md btn btn-light p-0" href="{{ route('post.store')}}">
 						<i class="fa-solid fa-plus fs-6"></i>
 					</a>
 				</li>
 
-        <li class="nav-item ms-2">
+        <!-- explore -->
+        <li class="nav-item ms-2" title="explore">
 					<a class="nav-link icon-md btn btn-light p-0" href="{{ route('explore')}}">
 						<i class="bi bi-compass-fill fs-6"> </i>
 					</a>
 				</li>
 
-        <li class="nav-item dropdown ms-2">
+        <!-- notifications -->
+        <li class="nav-item dropdown ms-2" title="notifications">
           <a class="nav-link icon-md btn btn-light p-0" href="#" id="notifDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
               <i class="bi bi-bell-fill fs-6"> </i>
           </a>
@@ -63,8 +67,8 @@
           @livewire('notifications.notifications-header')
           </div>
         </li>
-        <!-- Notification dropdown END -->
-
+        
+        <!-- user info -->
         <li class="nav-item ms-2 dropdown">
 					<a class="nav-link btn icon-md p-0" href="#" id="profileDropdown" role="button" data-bs-auto-close="outside" data-bs-display="static" data-bs-toggle="dropdown" aria-expanded="false">
 						<img class="avatar-img rounded-2" src="{{auth()->user()->profile_pic}}" alt="">
@@ -115,8 +119,6 @@
             <!-- Dark mode switch END -->
           </ul>
 				</li>
-
-			  <!-- Profile START -->
         
 			</ul>
 			<!-- Nav right END -->
