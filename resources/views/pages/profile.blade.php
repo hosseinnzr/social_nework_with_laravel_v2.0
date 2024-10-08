@@ -498,10 +498,11 @@
   <!-- Container END -->
 </main>
 
+@if ( in_array(auth()->id(), explode(",", $user['followers'])) || $user['privacy'] == 'public')
   <!-- Show follower/following START -->
     <x-show-follower-following :following="$following_user" :follower="$follower_user" />
   <!-- Show follower/following END -->
-
+@endif
 
 @endauth
 @endsection    
