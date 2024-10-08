@@ -5,7 +5,7 @@
     <div class="offcanvas offcanvas-end" data-bs-scroll="false" tabindex="-1" id="showFollowers">
         <!-- Offcanvas header -->
         <div class="offcanvas-header d-flex justify-content-between">
-            <h5 class="offcanvas-title">Show Followers</h5>
+            <h5 class="offcanvas-title">Followers</h5>
             <div class="d-flex">
 
                 <!-- Close  -->
@@ -45,7 +45,7 @@
     <div class="offcanvas offcanvas-end" data-bs-scroll="false" tabindex="-1" id="showFollowing">
         <!-- Offcanvas header -->
         <div class="offcanvas-header d-flex justify-content-between">
-        <h5 class="offcanvas-title">Show Following</h5>
+        <h5 class="offcanvas-title">Followings</h5>
             <div class="d-flex">
 
                 <!-- Close  -->
