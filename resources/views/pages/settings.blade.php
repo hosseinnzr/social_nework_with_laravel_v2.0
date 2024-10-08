@@ -388,77 +388,28 @@
             <!-- Privacy and safety tab START -->
             <div class="tab-pane fade" id="nav-setting-tab-3">
               <!-- Privacy and safety START -->
-              {{-- <div class="card">
+              <div class="card">
                 <!-- Card header START -->
                 <div class="card-header border-0 pb-0">
-                  <h5 class="card-title">Privacy and safety</h5>
-                  <p class="mb-0">See information about your account, download an archive of your data, or learn about your account deactivation options</p>
+                  <h5 class="card-title">Account privacy</h5>
+                  <p class="fs-12">When your account is public, your profile and posts can be seen by anyone, on or off Instagram, even if they don't have an Instagram account.</p>
+
+                  <p class="mb-0">When your account is private, only the followers you approve can see what you share, including your photos or videos on hashtag and location pages, and your followers and following lists. Certain info on your profile, like your profile picture and username, is visible to everyone on and off Instagram. Learn more</p>
+
                 </div>
                 <!-- Card header START -->
-                <!-- Card body START -->
-                <div class="card-body">
-                  <!-- Privacy START -->
-                  <ul class="list-group">
-                    
-                    <!-- Privacy item -->
-                    <li class="list-group-item d-md-flex justify-content-between align-items-start">
-                      <div class="me-md-3">
-                        <h6 class="mb-0">	Use two-factor authentication</h6>  
-                        <p class="small mb-0">Unaffected occasional thoroughly. Adieus it no wonders spirit houses. </p>
-                      </div>
-                      <button class="btn btn-primary-soft btn-sm mt-1 mt-md-0"> <i class="bi bi-pencil-square"></i> Change</button>
-                    </li>
 
-                    <!-- Privacy item -->
-                    <li class="list-group-item d-md-flex justify-content-between align-items-start">
-                      <div class="me-md-3">
-                        <h6 class="mb-0">Login activity</h6>  
-                        <p class="small mb-0">Select the language you use on social</p>
-                      </div>
-                      <button class="btn btn-primary-soft btn-sm mt-1 mt-md-0" data-bs-toggle="modal" data-bs-target="#modalLoginActivity"> <i class="bi bi-eye"></i> View</button>
-                    </li>
-
-                    <!-- Privacy item -->
-                    <li class="list-group-item d-md-flex justify-content-between align-items-start">
-                      <div class="me-md-3">
-                        <h6 class="mb-0">Manage your data and activity</h6>  
-                        <p class="small mb-0">Select a language for translation</p>
-                      </div>
-                      <button class="btn btn-primary-soft btn-sm mt-1 mt-md-0"> <i class="bi bi-pencil-square"></i> Change</button>
-                    </li>
-
-                    <!-- Privacy item -->
-                    <li class="list-group-item d-md-flex justify-content-between align-items-start">
-                      <div class="me-md-3">
-                        <h6 class="mb-0">Search history</h6>  
-                        <p class="small mb-0">Choose to autoplay videos on social</p>
-                      </div>
-                      <button class="btn btn-primary-soft btn-sm mt-1 mt-md-0"> <i class="bi bi-pencil-square"></i> Change</button>
-                    </li>
-
-                    <!-- Privacy item -->
-                    <li class="list-group-item d-md-flex justify-content-between align-items-start">
-                      <div class="me-md-3">
-                        <h6 class="mb-0">Permitted services</h6>  
-                        <p class="small mb-0">Choose if this feature appears on your profile</p>
-                      </div>
-                      <button class="btn btn-primary-soft btn-sm mt-1 mt-md-0"> <i class="bi bi-pencil-square"></i> Change</button>
-                    </li>
-                  </ul>
-                  <!-- Privacy END -->
-                </div>
-                <!-- Card body END -->
-                <!-- Button save -->
-                <div class="card-footer pt-0 text-end border-0">
-                  <button type="submit" class="btn btn-sm btn-primary mb-0">Save changes</button>
-                </div>
-              </div> --}}
+                <!-- Private account START -->
+                @livewire('settings.privacy-settings')
+                <!-- Private account END -->
+                <br>
+              </div>
               <!-- Privacy and safety END -->
-
+              <br>
 
               <!-- Change your password START -->
                 @livewire('settings.change-password')
-              <!-- Account settings tab END -->
+              <!-- Change your password END -->
 
             </div>
             <!-- Privacy and safety tab END -->

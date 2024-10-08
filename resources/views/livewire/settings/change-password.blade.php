@@ -3,7 +3,7 @@
 
         <!-- Title START -->
         <div class="card-header border-0 pb-0">
-            <h5 class="card-title">Change your password</h5>
+            <h5 class="card-title">Change password</h5>
         </div>
         <br>
         <div style="margin: 0px 20px 0px 20px; font-size: 0.8em;">
