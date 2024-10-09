@@ -5,6 +5,7 @@ namespace App\Livewire\Settings;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\notifications;
 
 class PrivacySettings extends Component
 {
@@ -34,6 +35,10 @@ class PrivacySettings extends Component
                 }else{
                     $following_number = count(explode(",", $user->following));
                 }
+
+                // delete request notifiction
+                $post = notifications::where('UID', $user_signin->id)->where('type', 'follow_request')->where('body', $user->user_name);
+                $post->update(['delete' => 1]);
 
                 $user->following_number = $following_number - 1;
                 $user->save();
