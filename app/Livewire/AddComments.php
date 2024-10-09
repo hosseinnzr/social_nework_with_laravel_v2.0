@@ -25,6 +25,8 @@ class AddComments extends Component
 
     public $amount = 5;
 
+    public $comment_number = 0;
+
     public function save($postId){
         $input = [
             'UID' => Auth::id(),
@@ -44,13 +46,9 @@ class AddComments extends Component
     }
 
     public function loadMore(){
-        $comment_number = count(comments::latest()->where('post_id', $this->postId)->get());
-
+        
         $this->amount += 5;
 
-        if($this->amount >= $comment_number){
-            $this->show_load_more = false;
-        }
     }
 
     public function like($single_comment)
@@ -97,6 +95,12 @@ class AddComments extends Component
     }
     public function render()
     {
+        $this->comment_number = count(comments::latest()->where('post_id', $this->postId)->get());
+
+        if($this->amount >= $this->comment_number){
+            $this->show_load_more = false;
+        }
+
         $this->post_comments = comments::latest()->where('post_id', $this->postId)->limit($this->amount)->get();
 
         return view('livewire.add-comments',[
