@@ -34,7 +34,7 @@
                 <div class="ms-sm-4 mt-sm-3">
 
                   <!-- Info -->
-                  <div class="hstack gap-2 gap-xl-3">
+                  <div class="hstack gap-2 gap-xl-3 d-flex justify-content-center">
                     <div>
                       <h2 class="mb-0">{{$user['user_name']}}</h2>
                       <small>{{$user['first_name']}} {{$user['last_name']}} . {{$user['privacy']}}</small>
