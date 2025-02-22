@@ -260,7 +260,7 @@
                                         
 
                                         <li class="nav-item">
-                                          @livewire('save-post', ['postId' => $post['id']]) 
+                                          @livewire('save-post', ['post' => $post]) 
                                         </li>
 
                                       </ul>
@@ -427,7 +427,7 @@
                                             </div>
                   
                                             <li class="nav-item">
-                                              @livewire('save-post', ['postId' => $save_post['id']]) 
+                                              @livewire('save-post', ['post' => $post]) 
                                             </li>
 
                                           </ul>

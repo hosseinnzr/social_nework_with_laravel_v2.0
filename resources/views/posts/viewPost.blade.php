@@ -103,7 +103,7 @@
                       <!-- scroll show send END -->
 
                     <li class="nav-item">
-                        @livewire('save-post', ['postId' => $post['id']]) 
+                      @livewire('save-post', ['post' => $post]) 
                     </li>
 
                     </ul>

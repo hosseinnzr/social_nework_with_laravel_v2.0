@@ -2,53 +2,43 @@
 
 namespace App\Livewire;
 
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use App\Models\savePost as save_post;
 use App\Models\Post;
 use Livewire\Component;
 
 class SavePost extends Component
 {
-    public $postId;
-    public function savepost(){
+    public $post;
+    public $saved;
 
-        $saved = false;
+    public function savepost($post){
 
-        $user = User::findOrFail(auth::id());
-        $postId = $this->postId;
-
-        // Read save post from dataBase
-        $user_save_post = $user->save_post;
-        $user_save_post_array = explode(",", $user_save_post);
-
-        foreach($user_save_post_array as $save_post_id){
-            if ($postId == $save_post_id){
-
-                // delete save  
-                $user_save_post_array = array_diff($user_save_post_array, array($save_post_id));
-                
-                $user_save_post = implode(",", $user_save_post_array);
-
-                $saved = true;
-                break;
-            }
-        }
-
-        if(!$saved){
-            $user_save_post = $user->save_post . ',' . $this->postId;
-        }
-
-        // update save_post
-        $user->save_post = $user_save_post;
-        $user->save();
+        save_post::create([
+            'UID' => auth::id(),
+            'post_id' => $post['id'],
+            'user_post_id' => $post['UID']
+        ]);
         
         notify()->success('you are now signin');
 
         return back();
     }
 
+    public function deleteSave($post){
+
+        $find_save_post = save_post::where('UID',auth::id())->where('post_id', $post['id']);
+
+        $find_save_post->delete();
+    }
+
     public function render()
     {
+        if(save_post::where('UID',auth::id())->where('post_id', $this->post['id'])->exists()){
+            $this->saved = 1;
+        }else{
+            $this->saved = 0;
+        }
         return view('livewire.save-post');
     }
 }

@@ -277,7 +277,7 @@
                                   </div>
         
                                   <li class="nav-item">
-                                    @livewire('save-post', ['postId' => $post['id']]) 
+                                    @livewire('save-post', ['post' => $post]) 
                                   </li>
 
                                 </ul>
@@ -347,7 +347,7 @@
                   <!-- send button END -->
 
                   <li class="nav-item">
-                    @livewire('save-post', ['postId' => $post['id']]) 
+                    @livewire('save-post', ['post' => $post]) 
                   </li>
 
                 </ul>
