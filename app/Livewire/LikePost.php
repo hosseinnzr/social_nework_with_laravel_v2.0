@@ -5,7 +5,6 @@ namespace App\Livewire;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Post;
 use App\Models\likePost as like_post;
-use App\Models\notifications;
 use Livewire\Component;
 
 class LikePost extends Component
@@ -13,12 +12,8 @@ class LikePost extends Component
     public $post;
 
     public $liked;
-    public $test;
-
     public function like($post)
     {
-        $this->test = 'style="color:red;"';
-
         like_post::create([
             'UID' => auth::id(),
             'post_id' => $post['id'],
@@ -34,7 +29,6 @@ class LikePost extends Component
         $find_like_post = like_post::where('UID',auth::id())->where('post_id', $post['id']);
 
         $find_like_post->delete();
-
     }
 
 
@@ -50,7 +44,7 @@ class LikePost extends Component
 
         $post = Post::findOrFail($this->post['id']);
 
-        // update line number
+        // update like number
         $post->like_number = like_post::where('UID',auth::id())->where('post_id', $this->post['id'])->count();
         $post->save();
 

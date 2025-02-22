@@ -4,7 +4,6 @@ namespace App\Livewire;
 
 use Illuminate\Support\Facades\Auth;
 use App\Models\savePost as save_post;
-use App\Models\Post;
 use Livewire\Component;
 
 class SavePost extends Component
