@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\comments;
+use App\Models\likeComment;
 use Illuminate\Support\Facades\Auth;
 
 class AddComments extends Component
@@ -53,48 +54,33 @@ class AddComments extends Component
 
     public function like($single_comment)
     {
+        $check = likeComment::create([
+            'UID' => auth::id(),
+            'comment_id' => $single_comment['id'],
+            'user_comment_id' => $single_comment['UID']
+            // 'type'=> 'like',
+        ]);
+
+        if(!$check){
+            // error
+        }
+    }
+
+    public function dislike($single_comment)
+    {
         $id = $single_comment['id'];
-        $is_liked = false;
-        $user_liked_id = auth::id();
 
-        $comment = comments::findOrFail($id);
-        $comment_like = $comment->like;
+        $find_like_post = likeComment::where('UID',auth::id())->where('comment_id', $id);
 
-        $comment_liked_array = explode(",", $comment_like);
+        $check = $find_like_post->delete();
 
-        foreach($comment_liked_array as $like_number){
-
-            if ($user_liked_id == $like_number){
-                $post_liked_array = array_diff($comment_liked_array, array($like_number));
-                $like = implode(",", $post_liked_array);
-                $is_liked = true;
-                break;
-            }
+        if(!$check){
+            // error
         }
-
-        if(!$is_liked){
-            $like = $comment->like .','. $user_liked_id;   
-        }
-
-        // save like
-        $comment->like = $like;
-        $comment->save();
-
-            if ($comment->like == ""){
-                $like_number = 0;
-            }else{
-                $like_number = count(explode(",", $comment->like)) -1;
-            }
-        
-        // save like_number
-        $comment->like_number = $like_number;
-        $comment->save();
-
-        $this->single_comment['like_number'] = $comment->like_number;
-
     }
     public function render()
     {
+        // load more
         $this->comment_number = count(comments::latest()->where('post_id', $this->postId)->get());
 
         if($this->amount >= $this->comment_number){
@@ -102,6 +88,17 @@ class AddComments extends Component
         }
 
         $this->post_comments = comments::latest()->where('post_id', $this->postId)->limit($this->amount)->get();
+
+        // check liked
+        foreach($this->post_comments as $single_comment){
+            if(likeComment::where('UID',auth::id())->where('comment_id', $single_comment['id'])->exists()){
+                $single_comment['liked'] = true;
+            }else{
+                $single_comment['liked'] = false;
+            }
+
+            $single_comment['like_number'] = likeComment::where('comment_id', $single_comment['id'])->count();
+        }
 
         return view('livewire.add-comments',[
             'post_comments' => $this->post_comments,

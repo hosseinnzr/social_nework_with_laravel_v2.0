@@ -48,10 +48,10 @@
                             <p class="mb-1"> <a href="/user/{{$single_comment['user_name']}}"> {{$single_comment['user_name']}} </a></p>
                             
                             <div style="text-align: center">
-                                @if (in_array(Auth::id(), explode(",", $single_comment['like'])))
-                                    <button style="color:red" wire:click="like({{$single_comment}})"><i class="bi bi-heart-fill "></i></button>
+                                @if ($single_comment['liked'])
+                                    <button style="color:red" wire:click="dislike({{$single_comment}})"><i class="bi bi-heart-fill "></i></button>
                                 @else
-                                    <button  wire:click="like({{$single_comment}})"><i class="bi bi-heart "></i></button>
+                                    <button wire:click="like({{$single_comment}})"><i class="bi bi-heart "></i></button>
                                 @endif
                             </div>    
 
