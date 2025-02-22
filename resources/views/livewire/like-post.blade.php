@@ -5,3 +5,4 @@
         <button  wire:click="like({{$post}})"><i class="bi bi-heart fa-lg pe-1"></i> {{ $post['like_number'] }}</button>
     @endif
 </div>
+

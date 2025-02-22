@@ -15,7 +15,6 @@ return new class extends Migration
             $table->string('post');
             $table->longText('tag')->nullable();
             $table->boolean('delete')->default(0);
-            $table->string('like')->nullable()->default(null);
             $table->integer('like_number')->default(0);
 
             $table->timestamp('created_at')->useCurrent();

@@ -14,11 +14,10 @@
                 <!-- add comment START -->
 
                 <form wire:submit="save({{$postId}})" >
-                    <label>             
-                        <input wire:model="comment" name="comment" id="cmnt-input" class="form-control py-2 w-full" type="text" placeholder="Add a comment…" aria-label="Search">
-                    </label>
-
-                    <button class="btn btn-light" id="cmnt-btn" type="submit">  <i class="fa-solid fa-comment"></i></button>
+                    <div class="input-group mb-3">
+                        <input wire:model="comment" name="comment" id="cmnt-input" type="text" class="form-control" placeholder="Add a comment…" aria-label="Search">
+                        <button class="btn btn-light" id="cmnt-btn" type="submit">  <i class="fa-solid fa-comment"></i></button>
+                    </div>
                 </form>
 
             </div>

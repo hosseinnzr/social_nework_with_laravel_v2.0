@@ -6,7 +6,8 @@
 /public/post-picture
 /public/story-pictures
 /public/storage
-/public/explore_algorithm/files/*
+/public/explore_algorithm/files/features.pkl
+/public/explore_algorithm/files/*.csv
 /storage/*.key
 /vendor
 .env
