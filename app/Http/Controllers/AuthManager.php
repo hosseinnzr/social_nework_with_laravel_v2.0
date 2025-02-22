@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Post;
 use App\Models\notifications;
+use App\Models\savePost;
 use Exception;
 
 use SimpleSoftwareIO\QrCode\Facades\QrCode as QR;
@@ -22,15 +22,14 @@ class AuthManager extends Controller
                     $user = User::where('user_name', $user_name)->first();
                     $posts = Post::latest()->where('delete', 0)->where('UID', $user->id)->get();
 
-                    $save_posts_id = explode(',', $user->save_post);
-                    $save_posts = Post::latest()->whereIn('id', $save_posts_id)->get();
+                    $find_save_posts_id = savePost::where('UID',auth::id())->get('post_id');
+                    $find_save_posts = Post::whereIn('id', $find_save_posts_id)->get();
 
-
-                    foreach ($save_posts as $save_post) {
-                        $find_user = User::where('id', $save_post->UID)->select('id', 'user_name', 'profile_pic')->first();
-                        $save_post['user_id'] = $find_user['id'];
-                        $save_post['user_name'] = $find_user['user_name'];
-                        $save_post['user_profile_pic'] = $find_user['profile_pic'];
+                    foreach ($find_save_posts as $saved_post) {
+                        $find_user = User::where('id', $saved_post->UID)->select('id', 'user_name', 'profile_pic')->first();
+                        $saved_post['user_id'] = $find_user['id'];
+                        $saved_post['user_name'] = $find_user['user_name'];
+                        $saved_post['user_profile_pic'] = $find_user['profile_pic'];
                     }
 
                     if(isset($request->tag)){
@@ -53,7 +52,7 @@ class AuthManager extends Controller
                     $qr_code = QR::size(200)->generate('https://social.thezoom.ir/user/'.auth::user()['user_name']);
                     
                     return view('pages.profile', [
-                        'save_posts' => $save_posts,
+                        'save_posts' => $find_save_posts,
                         'posts' => $posts,
                         'user' => $user,
                         'follower_user' => $follower_user,
