@@ -14,13 +14,15 @@ class LikePost extends Component
     public $liked;
     public function like($post)
     {
-        like_post::create([
-            'UID' => auth::id(),
-            'post_id' => $post['id'],
-            // 'type'=> 'like',
-            'user_post_id' => $post['UID'],
-        ]);
-
+        if(!like_post::where('UID',auth::id())->where('post_id', $post['id'])->exists())
+        {
+            like_post::create([
+                'UID' => auth::id(),
+                'post_id' => $post['id'],
+                // 'type'=> 'like',
+                'user_post_id' => $post['UID'],
+            ]);
+        }
     }
 
 
@@ -33,9 +35,7 @@ class LikePost extends Component
 
 
     public function render()
-    {
-        $this->liked = !$this->liked;
-        
+    {        
         if(like_post::where('UID',auth::id())->where('post_id', $this->post['id'])->exists()){
             $this->liked = 1;
         }else{

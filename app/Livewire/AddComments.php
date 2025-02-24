@@ -54,16 +54,20 @@ class AddComments extends Component
 
     public function like($single_comment)
     {
-        $check = likeComment::create([
-            'UID' => auth::id(),
-            'comment_id' => $single_comment['id'],
-            'user_comment_id' => $single_comment['UID']
-            // 'type'=> 'like',
-        ]);
+        if(!likeComment::where('UID',auth::id())->where('comment_id', $single_comment['id'])->exists())
+        {
+            $check = likeComment::create([
+                'UID' => auth::id(),
+                'comment_id' => $single_comment['id'],
+                'user_comment_id' => $single_comment['UID']
+                // 'type'=> 'like',
+            ]);
 
-        if(!$check){
-            // error
+            if(!$check){
+                // error
+            }
         }
+
     }
 
     public function dislike($single_comment)

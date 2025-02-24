@@ -13,12 +13,15 @@ class SavePost extends Component
 
     public function savepost($post){
 
-        save_post::create([
-            'UID' => auth::id(),
-            'post_id' => $post['id'],
-            'user_post_id' => $post['UID']
-        ]);
-        
+        if(!save_post::where('UID',auth::id())->where('post_id', $post['id'])->exists())
+        {
+            save_post::create([
+                'UID' => auth::id(),
+                'post_id' => $post['id'],
+                'user_post_id' => $post['UID']
+            ]);
+        }
+
         notify()->success('you are now signin');
 
         return back();
