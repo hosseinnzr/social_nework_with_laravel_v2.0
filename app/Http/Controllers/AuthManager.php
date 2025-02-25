@@ -22,7 +22,8 @@ class AuthManager extends Controller
                     $user = User::where('user_name', $user_name)->first();
                     $posts = Post::latest()->where('delete', 0)->where('UID', $user->id)->get();
 
-                    $find_save_posts_id = savePost::where('UID',auth::id())->get('post_id');
+                    $find_save_posts_id = savePost::where('UID', auth::id())->pluck('post_id')->toArray();
+
                     $find_save_posts = Post::whereIn('id', $find_save_posts_id)->get();
 
                     foreach ($find_save_posts as $saved_post) {

@@ -304,7 +304,6 @@
                 <!-- Save photos tab START -->
                 <div class="tab-pane fade" id="tab-2">
                   <div class="row g-3">
-                    
                     @foreach ($save_posts as $save_post)
                       <!-- script for open send-post modal -->
                       <script>
@@ -427,7 +426,7 @@
                                             </div>
                   
                                             <li class="nav-item">
-                                              @livewire('save-post', ['post' => $post]) 
+                                              @livewire('save-post', ['post' => $save_post]) 
                                             </li>
 
                                           </ul>
