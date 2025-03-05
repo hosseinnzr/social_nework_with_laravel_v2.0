@@ -8,10 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Post;
 use App\Models\notifications;
 use App\Models\savePost;
+use App\Models\follow;
 use Exception;
-
-use SimpleSoftwareIO\QrCode\Facades\QrCode as QR;
-
 
 class AuthManager extends Controller
 {
@@ -44,13 +42,12 @@ class AuthManager extends Controller
                         } 
                     }
 
-                    $user_follower = explode(",", $user->followers);
-                    $user_following = explode(",", $user->following);
+                    $user_follower = Follow::where('following_id', $user->id)->pluck('follower_id')->toArray();
+                    $user_following = Follow::where('follower_id', $user->id)->pluck('following_id')->toArray();
 
                     $follower_user = User::whereIn('id', $user_follower)->select('user_name', 'first_name', 'last_name', 'profile_pic')->get();
                     $following_user = User::whereIn('id', $user_following)->select('user_name', 'first_name', 'last_name', 'profile_pic')->get();
 
-                    $qr_code = QR::size(200)->generate('https://social.thezoom.ir/user/'.auth::user()['user_name']);
                     
                     return view('pages.profile', [
                         'save_posts' => $find_save_posts,
@@ -58,10 +55,9 @@ class AuthManager extends Controller
                         'user' => $user,
                         'follower_user' => $follower_user,
                         'following_user' => $following_user,
-                        'qr_code' => $qr_code,
                     ]);   
                 }else{
-                    notify()->error('user not found');
+                    notify()->error('user not active');
                     return back();
                 }
             }else{
@@ -335,153 +331,6 @@ class AuthManager extends Controller
             return Response()->json($error, 400);
         }
     }
-
-
-    // follow
-    public function follow($id){ 
-        $user_signin = User::findOrFail(auth::id());
-        $user = User::findOrFail($id);
-
-        if($user['privacy'] == 'public'){
-            $followers = $user->followers . ',' . $user_signin->id;
-            $followings = $user_signin->following . ',' . $user->id;
-            
-            // send notifiction
-            notifications::create([
-                'UID' => $user->id,
-                'body' => Auth::user()->user_name,
-                'type'=> 'follow',
-                'url' => '',
-                'user_profile' => Auth::user()->profile_pic,
-            ]);
-
-            $followers = array_unique(explode(",", $followers));
-            $followings = array_unique(explode(",", $followings));
-
-            $followers = implode(",", $followers);
-            $followings = implode(",", $followings);
-
-            // save follow
-            $user_signin->following = $followings;
-            $user->followers = $followers;
-
-            if ($user->followers == "0"){
-                $followers_number = 1;
-            }else{
-                $followers_number = count(explode(",", $user->followers));
-            }
-
-            if ($user_signin->following == "0"){
-                $following_number = 1;
-            }else{
-                $following_number = count(explode(",", $user_signin->following));
-            }
-
-            $user->followers_number = $followers_number -1;
-            $user_signin->following_number = $following_number -1;
-
-            $user_signin->save();
-            $user->save();
-
-            return back();
-        }elseif($user['privacy'] == 'private'){
-            $request_list = $user->request_list . ',' . $user_signin->id;
-            
-            // send notifiction
-            notifications::create([
-                'UID' => $user->id,
-                'body' => Auth::user()->user_name,
-                'type'=> 'follow_request',
-                'url' => '',
-                'user_profile' => Auth::user()->profile_pic,
-            ]);
-
-            $request_list = array_unique(explode(",", $request_list));
-
-            $request_list = implode(",", $request_list);
-
-            // save request
-            $user->request_list = $request_list;
-
-            $user->save();
-
-            return back();
-        }
-
-
-
-    }
-
-    // unfollow
-    public function unfollow($id){ 
-        $is_follow = false;
-        $user_signin = User::findOrFail(auth::id());
-        $user = User::findOrFail($id);
-
-        $user_signin_id_following = $user_signin->following;
-        $user_followers = $user->followers;
-
-        $user_signin_id_following_array = explode(",", $user_signin_id_following);
-        $user_follower_array = explode(",", $user_followers);
-
-        foreach($user_follower_array as $followers_number){
-            if ($user_signin->id == $followers_number){
-                // delete follower  
-                $user_follower_array = array_diff($user_follower_array, array($followers_number));
-                // delete following
-                $user_signin_id_following_array = array_diff($user_signin_id_following_array, array($user->id));
-
-                $followers = implode(",", $user_follower_array);
-                $followings = implode(",", $user_signin_id_following_array);
-
-                $is_follow = true;
-                break;
-            }
-        }
-
-        if(!$is_follow){
-            $followers = $user->followers . ',' . $user_signin->id;
-            $followings = $user_signin->following . ',' . $user->id;
-            
-            // send notifiction
-            notifications::create([
-                'UID' => $user->id,
-                'body' => Auth::user()->user_name,
-                'type'=> 'follow',
-                'url' => '/post/$post->UID',
-                'user_profile' => Auth::user()->profile_pic,
-            ]);
-        }
-
-        // save follow
-        $user_signin->following = $followings;
-        $user->followers = $followers;
-
-        $user_signin->save();
-        $user->save();
-
-        if ($user->followers == "0"){
-            $followers_number = 1;
-        }else{
-            $followers_number = count(explode(",", $user->followers));
-        }
-
-        if ($user_signin->following == "0"){
-            $following_number = 1;
-        }else{
-            $following_number = count(explode(",", $user_signin->following));
-        }
-        
-        $user->followers_number = $followers_number -1;
-        $user_signin->following_number = $following_number -1;
-
-        $user_signin->save();
-        $user->save();
-
-        return back();
-
-    }
-
 
     // delete account
     public function deleteAccount(Request $request){
