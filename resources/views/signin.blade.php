@@ -14,11 +14,14 @@
         <div class="card card-body text-center p-4 p-sm-5">
           <!-- Title -->
           <h1 class="mb-2">Sign in</h1>
-          <p>Don't have an account?<a href="/signup"> sign up</a></p>
+          <p>Don't have an account?<a href="/signup"> sign up{{ $redirect }}</a></p>
           <!-- Form START -->
 
-            <form  action="{{route('signin.post')}}" method="POST" class="mt-4">
+            <form  action="{{ route('signin.post', ['redirect' => request()->get('redirect')]) }}" method="POST" class="mt-4">
               @csrf
+
+              {{-- send redirect value --}}
+              <input name="redirect" type="hidden" value="{{ $redirect }}">
 
               <div class="mb-3 position-relative input-group-lg">
                 <input name="email" type="email" class="form-control" placeholder="Enter email">

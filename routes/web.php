@@ -50,8 +50,8 @@ Route::middleware(['web', 'throttle:600,1'])->group(function () {
     Route::post('/story', [StoryControllers::class, "create"])->name('crate.story');
 
     // Logout/signin Page
-    Route::get('/signin', [AuthManager::class, 'signin'])->name('signin');
-    Route::post('/signin', [AuthManager::class, 'signinPost'])->name('signin.post');
+    Route::get('/signin/{r}', [AuthManager::class, 'signin'])->name('signin');
+    Route::post('/signin/{redirect?}', [AuthManager::class, 'signinPost'])->name('signin.post');
     
     Route::get('/logout', function(){
         return redirect()->route('signin');

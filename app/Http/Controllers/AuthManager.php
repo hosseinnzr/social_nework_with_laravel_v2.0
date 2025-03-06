@@ -136,17 +136,18 @@ class AuthManager extends Controller
 
 
     // signin / signUp / logout
-    function signin(){
+    function signin(Request $request){
         if(auth::check()){
             notify()->success('you are now signin');
             return redirect()->route('home');  
         }else{
-            return view('signin');
+            return view('signin',[
+                'redirect' => $request->query('r')
+            ]);
         }
     }
 
-    function signinPost(Request $request){
-
+    function signinPost(Request $request, $redirect = null){
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
@@ -154,11 +155,16 @@ class AuthManager extends Controller
         
         if(Auth::attempt($credentials)){
 
-            if(Auth::user()->status == "active"){
-                
+            if(Auth::user()->status == "active"){         
                 $request->session()->regenerate();
 
                 notify()->success('signup successfully');
+
+                $redirect = $request['redirect'];
+                if ($redirect) {
+                    return redirect($redirect);
+                }
+
                 return redirect()->route('home');
 
             }
