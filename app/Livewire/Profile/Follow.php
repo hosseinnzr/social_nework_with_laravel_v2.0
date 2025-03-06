@@ -90,6 +90,18 @@ class Follow extends Component
         $find_follow_user = follow_model::where('follower_id',auth::id())->where('following_id', $user_id);
 
         $find_follow_user->delete();
+
+        // update follow number
+        $user_signin = User::findOrFail(auth::id());
+        $user = User::findOrFail($user_id);
+
+        $user_signin->following_number = follow_model::where('follower_id',auth::id())->count();
+        $user_signin->save();
+
+        $user->followers_number = follow_model::where('following_id',$user_id)->count();
+        $user->save();
+
+        return back();
     }
     
     public function render()

@@ -155,7 +155,7 @@
                                       <div class="ms-sm-3">
                                           <div>
                                               <div class="nav nav-divider">
-                                                  <p class="nav-item card-title mb-0"><b>follow request</b></p>
+                                                  <p class="nav-item card-title mb-0"><b>follow request{{$user_notification->id}}</b></p>
                                                   <span class="nav-item small"> {{$user_notification['created_at']->diffForHumans(null, true, true)}} ago</span>
                                               </div>
                                               <p class="nav-item small"><b>{{$user_notification->body}} </b>&nbsp;send follow request</p>

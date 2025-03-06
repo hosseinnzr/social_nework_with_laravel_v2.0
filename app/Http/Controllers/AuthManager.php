@@ -9,6 +9,7 @@ use App\Models\Post;
 use App\Models\notifications;
 use App\Models\savePost;
 use App\Models\follow;
+use App\Models\followRequest;
 use Exception;
 
 class AuthManager extends Controller
@@ -77,25 +78,18 @@ class AuthManager extends Controller
         $user_signin = User::findOrFail(auth::id());
         $user = User::where('user_name', $userName)->first();
 
-        $followers = $user_signin->followers . ',' . $user->id;
-        $followings = $user->following . ',' . $user_signin->id;
-        $user_request = $user->request_list;
+        // delete follow request
+        $find_follow_user = followRequest::where('follower_id',$user['id'])->where('following_id', auth::id());
+        $find_follow_user->delete();
 
-        $user_request_lists = explode(",", $user_request);
-
-        foreach($user_request_lists as $user_request_list){
-            if ($user_request_list == $userName){
-                
-                $new_request_lists = array_diff($user_request_lists, array($userName));
-
-                $user_request = implode(",", $new_request_lists);
-
-                break;
-            }
+        // add user to followr
+        if(!follow::where('follower_id',$user['id'])->where('following_id', auth::id())->exists())
+        {
+            follow::create([
+                'follower_id' => $user['id'],
+                'following_id' => auth::id(),
+            ]);
         }
-
-
-        $user_signin->request_list = $user_request;
         
         // send notifiction
         notifications::create([
@@ -110,66 +104,27 @@ class AuthManager extends Controller
         $post = notifications::where('id', $request->notificationid);
         $post->update(['delete' => 1]);
 
-        $followers = array_unique(explode(",", $followers));
-        $followings = array_unique(explode(",", $followings));
-
-        $followers = implode(",", $followers);
-        $followings = implode(",", $followings);
-
-
-        // save follow
-        $user_signin->followers = $followers;
-        $user->following = $followings;
-
-        if ($user_signin->followers == "0"){
-            $followers_number = 1;
-        }else{
-            $followers_number = count(explode(",", $user_signin->followers));
-        }
-
-        if ($user->following == "0"){
-            $following_number = 1;
-        }else{
-            $following_number = count(explode(",", $user->following));
-        }
-
-        $user_signin->followers_number = $followers_number -1;
-        $user->following_number = $following_number -1;
-
+        // update follow number
+        $user_signin->followers_number = follow::where('following_id',auth::id())->count();
         $user_signin->save();
+
+        $user->following_number = follow::where('follower_id',$user['id'])->count();
         $user->save();
 
-        notify()->success('accept follow request from '.$userName);
         return redirect('notifications');
     }
 
     function deleteRequest(Request $request, $userName){
-        $user_signin = User::findOrFail(auth::id());
         $user = User::where('user_name', $userName)->first();
 
-        $user_request = $user->request_list;
+        // delete follow request
+        $find_follow_user = followRequest::where('follower_id',$user['id'])->where('following_id', auth::id());
 
-        $user_request_lists = explode(",", $user_request);
-
-        foreach($user_request_lists as $user_request_list){
-            if ($user_request_list == $userName){
-                
-                $new_request_lists = array_diff($user_request_lists, array($userName));
-
-                $user_request = implode(",", $new_request_lists);
-
-                break;
-            }
-        }
+        $find_follow_user->delete();
 
         // delete request notifiction
         $post = notifications::where('id', $request->notificationid);
         $post->update(['delete' => 1]);
-
-        $user_signin->request_list = $user_request;
-
-        $user_signin->save();
-        $user->save();
 
         notify()->success('delete follow request from '.$userName);
         return redirect('notifications');
