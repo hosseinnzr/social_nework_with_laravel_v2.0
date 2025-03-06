@@ -365,7 +365,7 @@
             <!-- Card header START -->
             <div class="card-header d-flex justify-content-between align-items-center border-0 pb-0">
               <h6 class="card-title mb-0">People you may know</h6>
-              <button class="btn btn-sm btn-primary-soft"> See all </button>
+              <button class="btn btn-sm btn-primary-soft"> See more </button>
             </div>      
             <!-- Card header START -->
   
@@ -373,79 +373,29 @@
             <div class="card-body">
               <div class="tiny-slider arrow-hover">
                 <div class="tiny-slider-inner ms-n4" data-arrow="true" data-dots="false" data-items-xl="3" data-items-lg="2" data-items-md="2" data-items-sm="2" data-items-xs="1" data-gutter="12" data-edge="30">
+                  
                   <!-- Slider items -->
-                  <div> 
-                    <!-- Card add friend item START -->
-                    <div class="card shadow-none text-center">
-                      <!-- Card body -->
-                      <div class="card-body p-2 pb-0">
-                        <div class="avatar avatar-xl">
-                          <a href="#!"><img class="avatar-img rounded-circle" src="assets/images/avatar/09.jpg" alt=""></a>
+                  @foreach ($new_users as $new_user)
+                    <div> 
+                      <!-- Card add friend item START -->
+                      <div class="card shadow-none text-center">
+                        <!-- Card body -->
+                        <div class="card-body p-2 pb-0">
+                          <div class="avatar avatar-xl">
+                            <a href="/user/{{$new_user->user_name}}"><img class="avatar-img rounded-circle" src="{{$new_user->profile_pic}}" alt=""></a>
+                          </div>
+                          <h6 class="card-title mb-1 mt-3"> <a href="/user/{{$new_user->user_name}}">{{$new_user->user_name}}</a></h6>
+                          <p class="mb-0 small lh-sm">{{$new_user->first_name}} </br> {{$new_user->last_name}}</p>
                         </div>
-                        <h6 class="card-title mb-1 mt-3"> <a href="#!"> Amanda Reed </a></h6>
-                        <p class="mb-0 small lh-sm">50 mutual connections</p>
-                      </div>
-                      <!-- Card footer -->
-                      <div class="card-footer p-2 border-0">
-                        <button class="btn btn-sm btn-primary-soft w-100"> Add friend </button>
-                      </div>
-                    </div>
-                    <!-- Card add friend item END -->
-                  </div>
-                  <div>
-                    <!-- Card add friend item START -->
-                    <div class="card shadow-none text-center">
-                      <!-- Card body -->
-                      <div class="card-body p-2 pb-0">
-                        <div class="avatar avatar-story avatar-xl">
-                          <a href="#!"><img class="avatar-img rounded-circle" src="assets/images/avatar/10.jpg" alt=""></a>
+                        <!-- Card footer -->
+                        <div class="card-footer p-2 border-0">
+                          <button class="btn btn-sm btn-primary-soft w-100"> follow </button>
                         </div>
-                        <h6 class="card-title mb-1 mt-3"> <a href="#!"> Larry Lawson </a></h6>
-                        <p class="mb-0 small lh-sm">33 mutual connections</p>
                       </div>
-                      <!-- Card footer -->
-                      <div class="card-footer p-2 border-0">
-                        <button class="btn btn-sm btn-primary-soft w-100"> Add friend </button>
-                      </div>
+                      <!-- Card add friend item END -->
                     </div>
-                    <!-- Card add friend item END -->
-                  </div>
-                  <div>
-                    <!-- Card add friend item START -->
-                    <div class="card shadow-none text-center">
-                      <!-- Card body -->
-                      <div class="card-body p-2 pb-0">
-                        <div class="avatar avatar-xl">
-                          <a href="#!"><img class="avatar-img rounded-circle" src="assets/images/avatar/11.jpg" alt=""></a>
-                        </div>
-                        <h6 class="card-title mb-1 mt-3"> <a href="#!"> Louis Crawford </a></h6>
-                        <p class="mb-0 small lh-sm">45 mutual connections</p>
-                      </div>
-                      <!-- Card footer -->
-                      <div class="card-footer p-2 border-0">
-                        <button class="btn btn-sm btn-primary-soft w-100"> Add friend </button>
-                      </div>
-                    </div>
-                    <!-- Card add friend item END -->
-                  </div>
-                  <div>
-                    <!-- Card add friend item START -->
-                    <div class="card shadow-none text-center">
-                      <!-- Card body -->
-                      <div class="card-body p-2 pb-0">
-                        <div class="avatar avatar-xl">
-                          <a href="#!"><img class="avatar-img rounded-circle" src="assets/images/avatar/12.jpg" alt=""></a>
-                        </div>
-                        <h6 class="card-title mb-1 mt-3"> <a href="#!"> Dennis Barrett </a></h6>
-                        <p class="mb-0 small lh-sm">21 mutual connections</p>
-                      </div>
-                      <!-- Card footer -->
-                      <div class="card-footer p-2 border-0">
-                        <button class="btn btn-sm btn-primary-soft w-100"> Add friend </button>
-                      </div>
-                    </div>
-                    <!-- Card add friend item END -->
-                  </div>
+                  @endforeach
+                  
                 </div>
               </div>
             </div>
@@ -570,7 +520,7 @@
 
               <div class="modal-footer">
                 <button type="submit" class="btn btn-danger-soft me-2" data-bs-dismiss="modal"> Cancel</button>
-                <button type="submit" class="btn btn-success-soft">Create now</button>
+                <button type="submit" class="btn btn-success-soft">Create</button>
               </div>
 
             </form>

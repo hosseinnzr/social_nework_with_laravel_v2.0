@@ -4,15 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\User;
-
 use App\Models\story;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Models\follow;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
+
+use App\Http\Controllers\Controller;
 
 class PostController extends Controller
 {   
@@ -20,8 +20,8 @@ class PostController extends Controller
     public function home(Request $request){
         if(auth::check()){
 
-            $user_following = explode(",", Auth::user()->following);
-            $user_follower = explode(",", Auth::user()->followers);
+            $user_following = follow::where('follower_id', Auth::id())->pluck('following_id')->toArray();
+            $user_follower = follow::where('following_id', Auth::id())->pluck('follower_id')->toArray();
 
             $signin_user_id = Auth::id();
 
@@ -31,9 +31,7 @@ class PostController extends Controller
 
             $hash_tag = null;
 
-            $storys = story::orderBy('id')->select('id', 'UID')->groupBy('UID')->get();
-
-            // $storys = DB::table('story')->orderBy('id')->select('id', 'UID')->groupBy('UID')->get();
+            $storys = story::whereIn('UID', $user_following)->orderBy('id')->select('id', 'UID')->groupBy('UID')->get();
 
             foreach ($storys as $story) {
                 $user = User::where('id', $story->UID)->select('user_name', 'profile_pic')->first();

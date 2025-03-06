@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+
 use App\Models\User;
 use App\Models\story;
+use App\Models\follow;
 
-use Illuminate\Http\Request;
 
 class StoryControllers extends Controller
 {
     public function show(Request $request){
         if(auth::check()){
-            $storys_users_id = story::orderBy('id')->select('UID')->groupBy('UID')->get();
+            $user_following = follow::where('follower_id', Auth::id())->pluck('following_id')->toArray();
+            $storys_users_id = story::whereIn('UID', $user_following)->orderBy('id')->select('UID')->groupBy('UID')->get();
 
             $show_all_story = collect(); // empty collection
             foreach($storys_users_id as $storys_user_id){
