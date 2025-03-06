@@ -92,8 +92,9 @@
 
               <!-- Album Tab content START -->
               <div class="tab-content mb-0 pb-0">
-  
-                @if ($user['user_name'] == auth()->user()->user_name || $user['privacy'] == 'public' || in_array(auth()->id(), explode(",", $user['followers'])))
+                
+                {{-- show post --}}
+                @if ($user['user_name'] == auth()->user()->user_name || $user['privacy'] == 'public' || $check_follow)
                 <!-- your post tab START -->
                 <div class="tab-pane fade show active" id="tab-1">
                   <div class="row g-3">
@@ -248,7 +249,7 @@
                 </div>
                 <!-- your post tab END -->
                 @endif
-
+                {{-- show all post --}}
                 @if ($user['user_name'] == auth()->user()->user_name)
                 <!-- Save photos tab START -->
                 <div class="tab-pane fade" id="tab-2">

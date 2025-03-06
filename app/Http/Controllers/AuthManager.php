@@ -48,9 +48,13 @@ class AuthManager extends Controller
 
                     $follower_user = User::whereIn('id', $user_follower)->select('user_name', 'first_name', 'last_name', 'profile_pic')->get();
                     $following_user = User::whereIn('id', $user_following)->select('user_name', 'first_name', 'last_name', 'profile_pic')->get();
-
                     
+                    // check follow
+                    $check_follow = false;
+                    $check_follow = follow::where('follower_id',auth::id())->where('following_id', $user['id'])->exists();
+
                     return view('pages.profile', [
+                        'check_follow' => $check_follow,
                         'save_posts' => $find_save_posts,
                         'posts' => $posts,
                         'user' => $user,
