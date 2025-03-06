@@ -35,8 +35,12 @@
 
     @elseif ( $state == 3 )
 
-      <button wire:click="follow_request({{$user_id}})" type="submit" class="btn btn-secondary-soft me-2">Requested</button>
+      <button wire:click="delete_follow_request({{$user_id}})" type="submit" class="btn btn-secondary-soft me-2">delete Requested</button>
+    
+    @elseif ( $state == 4 )
 
+      <button wire:click="follow_request({{$user_id}})" type="submit" class="btn btn-secondary-soft me-2">Requested</button>
+    
     @else
 
       <button wire:click="follow({{$user_id}})" class="btn btn-primary-soft me-2">follow</button>

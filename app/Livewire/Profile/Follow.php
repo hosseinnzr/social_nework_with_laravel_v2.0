@@ -5,6 +5,7 @@ namespace App\Livewire\Profile;
 use Livewire\Component;
 use App\Models\User;
 use App\Models\notifications;
+use App\Models\followRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\follow as follow_model;
 
@@ -49,11 +50,10 @@ class Follow extends Component
     }
 
     public function follow_request($user_id){
-        
-        // follow
-        if(!follow_model::where('follower_id',auth::id())->where('following_id', $user_id)->exists())
+        // send request
+        if(!followRequest::where('follower_id',auth::id())->where('following_id', $user_id)->exists())
         {
-            follow_model::create([
+            followRequest::create([
                 'follower_id' => auth::id(),
                 'following_id' => $user_id,
             ]);
@@ -63,26 +63,28 @@ class Follow extends Component
         notifications::create([
             'UID' =>$user_id,
             'body' => Auth::user()->user_name,
-            'type'=> 'follow',
+            'type'=> 'follow_request',
             'url' => '',
             'user_profile' => Auth::user()->profile_pic,
         ]);
 
         $user = User::where('id', $user_id);
 
-        // update follow number
-        $user_signin = User::findOrFail(auth::id());
+        // update request number
         $user = User::findOrFail($user_id);
 
-        $user_signin->following_number = follow_model::where('follower_id',auth::id())->count();
-        $user_signin->save();
-
-        $user->followers_number = follow_model::where('following_id',$user_id)->count();
+        $user->request_number = followRequest::where('following_id',$user_id)->count();
         $user->save();
 
         return back();
     }
 
+    public function delete_follow_request($user_id){ 
+        // delete follow request
+        $find_follow_user = followRequest::where('follower_id',auth::id())->where('following_id', $user_id);
+
+        $find_follow_user->delete();
+    }
     public function unfollow($user_id){ 
 
         $find_follow_user = follow_model::where('follower_id',auth::id())->where('following_id', $user_id);
@@ -96,8 +98,10 @@ class Follow extends Component
             $this->state = 1;
         }elseif(follow_model::where('follower_id',auth::id())->where('following_id', $this->user_id)->exists()){
             $this->state = 2;
-        }elseif(User::where('id', $this->user_id)->first()->privacy == 'private'){
+        }elseif(followRequest::where('follower_id',auth::id())->where('following_id', $this->user_id)->exists()){
             $this->state = 3;
+        }elseif(User::where('id', $this->user_id)->first()->privacy == 'private'){
+            $this->state = 4;
         }else{
             $this->state = 0;
         }
