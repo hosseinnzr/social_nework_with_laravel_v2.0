@@ -126,15 +126,23 @@ class PostController extends Controller
     }
 
     public function viewPost($id){
+        if(auth::check()){
+            $post = post::findOrFail($id);
+            $user = User::findOrFail($post->UID);
+            // dd($user['id'] . $post['UID']);
+            if(follow::where('follower_id',auth::id())->where('following_id', $post->UID)->exists() || $user['privacy'] == 'public' || Auth::id() == $post['UID']){
+                $post['user_id'] = $user['id'];
+                $post['user_name'] = $user['user_name'];
+                $post['user_profile_pic'] = $user['profile_pic'];
 
-        $post = post::findOrFail($id);
+                return view('posts.viewPost', ['post' => $post]);
+            }else{
+                return redirect('/user/'.$user['user_name']);
+            }
 
-        $user = User::where('id', $post->UID)->select('id', 'user_name', 'profile_pic')->first();
-        $post['user_id'] = $user['id'];
-        $post['user_name'] = $user['user_name'];
-        $post['user_profile_pic'] = $user['profile_pic'];
-
-        return view('posts.viewPost', ['post' => $post]);
+        }else{
+            return redirect('signin/?r=/p/'.$id);
+        }
     }
 
     public function postRoute(Request $request,){
