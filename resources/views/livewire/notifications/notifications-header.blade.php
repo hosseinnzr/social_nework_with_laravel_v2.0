@@ -26,7 +26,7 @@
                 <ul class="list-group list-group-flush list-unstyled p-2">
 
                     @foreach ($user_notifications as $user_notification)
-
+                    
                         @if ($user_notification->type == 'like')
                             <!-- like post Notif START -->
                             <li>
@@ -121,11 +121,14 @@
                                             </div>
                                             
                                             <div class="d-flex">
-                                              <button wire:click="acceptRequest({{$user_notification->id}})" 
-                                                class="btn btn-sm py-1 btn-primary me-2">Confirm</button>
+                                                <button wire:click="acceptRequest({{$user_notification->id}}, '{{$user_notification->body}}')" 
+                                                    class="btn btn-sm py-1 btn-primary me-2">
+                                                    Accept
+                                                </button>
+                                                
 
-                                              <button wire:click="deleteRequest({{$user_notification->id}})" 
-                                                class="btn btn-sm py-1 btn-secondary-soft">Delete</button>
+                                              <button wire:click="deleteRequest({{$user_notification->id}}, '{{$user_notification->body}}')" 
+                                                class="btn btn-sm py-1 btn-danger-soft">Delete</button>
                                             </div>
                                         </div>
                                     </div>

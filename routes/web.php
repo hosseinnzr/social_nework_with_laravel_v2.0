@@ -16,9 +16,13 @@ Route::middleware(['web', 'throttle:600,1'])->group(function () {
     // delet account
     Route::post('/delaccount', [AuthManager::class, 'deleteAccount'])->name('delacount');
 
+    
+    // notifications
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications');
+    
     // follow request
-    Route::post('/accept-request/{userName}', [AuthManager::class, 'acceptRequest'])->name('acceptRequest');
-    Route::post('/delete-request/{userName}', [AuthManager::class, 'deleteRequest'])->name('deleteRequest');
+    Route::post('/accept-request', [AuthManager::class, 'acceptRequest'])->name('acceptRequest');
+    Route::post('/delete-request', [AuthManager::class, 'deleteRequest'])->name('deleteRequest');
 
     // Add / Edit Post
     Route::get('/post', [PostController::class, "postRoute"])->name('post');
@@ -50,7 +54,7 @@ Route::middleware(['web', 'throttle:600,1'])->group(function () {
     Route::post('/story', [StoryControllers::class, "create"])->name('crate.story');
 
     // Logout/signin Page
-    Route::get('/signin/{r}', [AuthManager::class, 'signin'])->name('signin');
+    Route::get('/signin/{r?}', [AuthManager::class, 'signin'])->name('signin');
     Route::post('/signin/{redirect?}', [AuthManager::class, 'signinPost'])->name('signin.post');
     
     Route::get('/logout', function(){
@@ -61,10 +65,6 @@ Route::middleware(['web', 'throttle:600,1'])->group(function () {
 
     // forgetPassword
     Route::get('/forgot-password', [AuthManager::class, 'forgotPassword'])->name('forgot-password');
-
-    // notifications
-    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications');
-
     
     // profile
     Route::get('/user/{user_name}', [AuthManager::class, "profile"])->name('profile');

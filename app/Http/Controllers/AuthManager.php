@@ -6,14 +6,20 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Post;
-use App\Models\notifications;
 use App\Models\savePost;
 use App\Models\follow;
-use App\Models\followRequest;
+use App\Services\RequestServices;
+
 use Exception;
 
 class AuthManager extends Controller
 {
+    protected $authService;
+    public function __construct(RequestServices $authService)
+    {
+        $this->authService = $authService;
+    }
+
     function profile(Request $request, $user_name){
         if(auth::check()){
             if(User::where('user_name', $user_name)->exists()){
@@ -78,59 +84,24 @@ class AuthManager extends Controller
 
 
     // follow request
-    function acceptRequest(Request $request, $userName){
-        $user_signin = User::findOrFail(auth::id());
-        $user = User::where('user_name', $userName)->first();
+    public function acceptRequest(Request $request)
+    {
+        $notificationid = $request->input('notificationid');
+        $userName = $request->input('userName');
 
-        // delete follow request
-        $find_follow_user = followRequest::where('follower_id',$user['id'])->where('following_id', auth::id());
-        $find_follow_user->delete();
-
-        // add user to followr
-        if(!follow::where('follower_id',$user['id'])->where('following_id', auth::id())->exists())
-        {
-            follow::create([
-                'follower_id' => $user['id'],
-                'following_id' => auth::id(),
-            ]);
-        }
-        
-        // send notifiction
-        notifications::create([
-            'UID' => $user_signin->id,
-            'body' => $user->user_name,
-            'type'=> 'accept Request',
-            'url' => '',
-            'user_profile' => Auth::user()->profile_pic,
-        ]);
-
-        // delete request notifiction
-        $post = notifications::where('id', $request->notificationid);
-        $post->update(['delete' => 1]);
-
-        // update follow number
-        $user_signin->followers_number = follow::where('following_id',auth::id())->count();
-        $user_signin->save();
-
-        $user->following_number = follow::where('follower_id',$user['id'])->count();
-        $user->save();
+        $this->authService->acceptRequest($notificationid, $userName);
 
         return redirect('notifications');
     }
 
-    function deleteRequest(Request $request, $userName){
-        $user = User::where('user_name', $userName)->first();
 
-        // delete follow request
-        $find_follow_user = followRequest::where('follower_id',$user['id'])->where('following_id', auth::id());
+    function deleteRequest(Request $request)
+    {
+        $notificationid = $request->input('notificationid');
+        $userName = $request->input('userName');
 
-        $find_follow_user->delete();
+        $this->authService->deleteRequest($notificationid, $userName);
 
-        // delete request notifiction
-        $post = notifications::where('id', $request->notificationid);
-        $post->update(['delete' => 1]);
-
-        notify()->success('delete follow request from '.$userName);
         return redirect('notifications');
     }
 

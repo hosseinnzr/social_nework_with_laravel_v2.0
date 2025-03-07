@@ -182,10 +182,10 @@
                       <!-- Card share action dropdown menu -->
                       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardShareAction8">
                         <li>                                
-                          <form action="{{route('follow', ['id' => $post['UID']])}}" method="POST" class="ms-auto me-auto">
+                          {{-- <form action="{{route('follow', ['id' => $post['UID']])}}" method="POST" class="ms-auto me-auto">
                             @csrf
                             <button type="submit" class="dropdown-item"><i class="bi bi-person-x fa-fw pe-2"></i>unfollow {{$post['user_name']}}</button>
-                          </form>
+                          </form> --}}
                         </li>
                         <li><a class="dropdown-item" href="#"> <i class="bi bi-slash-circle fa-fw pe-2"></i>Block {{$post['user_name']}}</a></li>
                         <li><a class="dropdown-item" href="/p/{{$post['id']}}"> <i class="bi bi-file-post-fill"></i> view post</a></li>

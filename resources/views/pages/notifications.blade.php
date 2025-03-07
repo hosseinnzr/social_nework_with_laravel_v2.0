@@ -163,17 +163,21 @@
                                           
                                           <div class="d-flex">
 
-                                            <form action="{{route('acceptRequest', ['userName' => $user_notification->body])}}" method="POST">
+                                            <form action="{{ route('acceptRequest') }}" method="POST">
                                               @csrf
-                                              <input name="notificationid" style="display: none" type="text" value="{{$user_notification->id}}">
-                                              <button class="btn btn-sm py-1 btn-primary me-2">Accept </button>
-                                            </form>
-
-                                            <form action="{{route('deleteRequest', ['userName' => $user_notification->body])}}" method="POST">
+                                              <input type="hidden" name="userName" value="{{ $user_notification->body }}">
+                                              <input type="hidden" name="notificationid" value="{{ $user_notification->id }}">
+                                              <button class="btn btn-sm py-1 btn-primary me-2">Accept</button>
+                                          </form>
+                                          
+                                          <form action="{{ route('deleteRequest') }}" method="POST">
                                               @csrf
-                                              <input name="notificationid" style="display: none" type="text" value="{{$user_notification->id}}">
-                                              <button class="btn btn-sm py-1 btn-danger-soft">Delete </button>
-                                            </form>
+                                              <input type="hidden" name="userName" value="{{ $user_notification->body }}">
+                                              <input type="hidden" name="notificationid" value="{{ $user_notification->id }}">
+                                              <button class="btn btn-sm py-1 btn-danger-soft">Delete</button>
+                                          </form>
+                                          
+                                          
 
                                           </div>
                                       </div>

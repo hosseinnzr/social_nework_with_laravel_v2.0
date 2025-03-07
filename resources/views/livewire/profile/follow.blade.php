@@ -39,7 +39,7 @@
     
     @elseif ( $state == 4 )
 
-      <button wire:click="follow_request({{$user_id}})" type="submit" class="btn btn-secondary-soft me-2">Requested</button>
+      <button wire:click="follow_request({{$user_id}})" type="submit" class="btn btn-secondary-soft me-2">Requeste</button>
     
     @else
 
