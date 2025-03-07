@@ -4,8 +4,10 @@ namespace App\Livewire\Settings;
 
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
+use App\Services\RequestServices;
 use App\Models\User;
 use App\Models\notifications;
+use App\Models\followRequest;
 
 class PrivacySettings extends Component
 {
@@ -17,49 +19,24 @@ class PrivacySettings extends Component
             $user_signin = User::where('id', auth::id())->first();
             $user_signin->update(['privacy' => 'public']);
 
-            $user_signin_requests = explode(",", $user_signin->request_list);
+            $find_notification_requests = 
+            notifications::
+                where('delete', '0')->
+                where('type','follow_request')->
+                where('UID', Auth::id())->get();
 
-            for( $i = 1; $i < count($user_signin_requests); $i++ ){
-                $user_signin_request = $user_signin_requests[$i];
-                $followers = $user_signin->followers . ',' . $user_signin_request;
+                if(count($find_notification_requests) != 0){
+                
+                $authService = new RequestServices();
 
-                $user = User::where('id',  $user_signin_request)->first();
-                $user->following = $user->following . "," . $user_signin->id;
+                for($i = 0; $i < count($find_notification_requests); $i++ ){
+                    $follow_request = $find_notification_requests[$i];
 
-                // update request list
-                $new_request_list = array_diff($user_signin_requests, array($user_signin_request));
-
-                // update following number
-                if ($user->following == "0"){
-                    $following_number = 1;
-                }else{
-                    $following_number = count(explode(",", $user->following));
+                    $notificationid = $follow_request->id;
+                    $userID = $follow_request->from;
+                    $authService->acceptRequest($notificationid, $userID);
                 }
-
-                // delete request notifiction
-                $post = notifications::where('UID', $user_signin->id)->where('type', 'follow_request')->where('body', $user->user_name);
-                $post->update(['delete' => 1]);
-
-                $user->following_number = $following_number - 1;
-                $user->save();
             }
-
-            // update sign in user followers
-            $user_signin->followers = $followers;
-
-            // update sign in user follower number
-            if ($user_signin->followers == "0"){
-                $followers_number = 1;
-            }else{
-                $followers_number = count(explode(",", $user_signin->followers));
-            }
-
-            $user_signin->followers_number = $followers_number - 1;
-
-            $user_signin->request_list = implode(",", $new_request_list);
-
-            $user_signin->save();
-
         }else{
             $user_signin = User::where('id', auth::id());
             $user_signin->update(['privacy' => 'private']);

@@ -121,13 +121,13 @@
                                             </div>
                                             
                                             <div class="d-flex">
-                                                <button wire:click="acceptRequest({{$user_notification->id}}, '{{$user_notification->body}}')" 
+                                                <button wire:click="acceptRequest({{$user_notification->id}}, '{{$user_notification->from}}')" 
                                                     class="btn btn-sm py-1 btn-primary me-2">
                                                     Accept
                                                 </button>
                                                 
 
-                                              <button wire:click="deleteRequest({{$user_notification->id}}, '{{$user_notification->body}}')" 
+                                              <button wire:click="deleteRequest({{$user_notification->id}}, '{{$user_notification->from}}')" 
                                                 class="btn btn-sm py-1 btn-danger-soft">Delete</button>
                                             </div>
                                         </div>

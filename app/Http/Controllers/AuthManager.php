@@ -87,9 +87,9 @@ class AuthManager extends Controller
     public function acceptRequest(Request $request)
     {
         $notificationid = $request->input('notificationid');
-        $userName = $request->input('userName');
+        $userID = $request->input('userID');
 
-        $this->authService->acceptRequest($notificationid, $userName);
+        $this->authService->acceptRequest($notificationid, $userID);
 
         return redirect('notifications');
     }
@@ -98,9 +98,9 @@ class AuthManager extends Controller
     function deleteRequest(Request $request)
     {
         $notificationid = $request->input('notificationid');
-        $userName = $request->input('userName');
+        $userID = $request->input('userID');
 
-        $this->authService->deleteRequest($notificationid, $userName);
+        $this->authService->deleteRequest($notificationid, $userID);
 
         return redirect('notifications');
     }

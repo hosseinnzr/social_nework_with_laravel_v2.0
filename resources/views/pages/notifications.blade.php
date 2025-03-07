@@ -165,14 +165,14 @@
 
                                             <form action="{{ route('acceptRequest') }}" method="POST">
                                               @csrf
-                                              <input type="hidden" name="userName" value="{{ $user_notification->body }}">
+                                              <input type="hidden" name="userID" value="{{ $user_notification->from }}">
                                               <input type="hidden" name="notificationid" value="{{ $user_notification->id }}">
                                               <button class="btn btn-sm py-1 btn-primary me-2">Accept</button>
                                           </form>
                                           
                                           <form action="{{ route('deleteRequest') }}" method="POST">
                                               @csrf
-                                              <input type="hidden" name="userName" value="{{ $user_notification->body }}">
+                                              <input type="hidden" name="userID" value="{{ $user_notification->from }}">
                                               <input type="hidden" name="notificationid" value="{{ $user_notification->id }}">
                                               <button class="btn btn-sm py-1 btn-danger-soft">Delete</button>
                                           </form>

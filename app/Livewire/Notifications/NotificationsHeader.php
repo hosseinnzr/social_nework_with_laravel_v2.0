@@ -12,7 +12,7 @@ class NotificationsHeader extends Component
 {
     public $user_notifications;
     public $notificationid;
-    public $userName;
+    public $userID;
 
     public function delete($notificationid)
     {
@@ -21,17 +21,17 @@ class NotificationsHeader extends Component
         $notification->save();
     }
 
-    public function acceptRequest($notificationid, $userName)
+    public function acceptRequest($notificationid, $userID)
     {
         $authService = new RequestServices();
-        $authService->acceptRequest($notificationid, $userName);
+        $authService->acceptRequest($notificationid, $userID);
     }
     
 
-    public function deleteRequest($notificationid, $userName)
+    public function deleteRequest($notificationid, $userID)
     {
         $authService = new RequestServices();
-        $authService->deleteRequest($notificationid, $userName);
+        $authService->deleteRequest($notificationid, $userID);
     }
 
     public function render()
