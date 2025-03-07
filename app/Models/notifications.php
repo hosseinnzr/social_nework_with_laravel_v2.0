@@ -16,7 +16,7 @@ class notifications extends Model
         'body',
         'user_profile',
         'type',
-        'url',
+        'from',
         'seen',
         'delete'
     ];

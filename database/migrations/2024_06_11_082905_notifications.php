@@ -15,7 +15,7 @@ return new class extends Migration
             $table->string('body');
             $table->string('type');
             $table->string('user_profile')->default('/default/default_profile.jpg');
-            $table->longText('url')->nullable();
+            $table->longText('from')->nullable();
             $table->boolean('seen')->default('0');
             $table->timestamps();
         });

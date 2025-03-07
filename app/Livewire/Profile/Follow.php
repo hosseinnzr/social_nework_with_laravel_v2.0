@@ -30,7 +30,7 @@ class Follow extends Component
             'UID' =>$user_id,
             'body' => Auth::user()->user_name,
             'type'=> 'follow',
-            'url' => '',
+            'from' => '',
             'user_profile' => Auth::user()->profile_pic,
         ]);
 
@@ -64,7 +64,7 @@ class Follow extends Component
             'UID' =>$user_id,
             'body' => Auth::user()->user_name,
             'type'=> 'follow_request',
-            'url' => '',
+            'from' => Auth::id(),
             'user_profile' => Auth::user()->profile_pic,
         ]);
 
@@ -84,6 +84,11 @@ class Follow extends Component
         $find_follow_user = followRequest::where('follower_id',auth::id())->where('following_id', $user_id);
 
         $find_follow_user->delete();
+
+        // delete notification request
+        $find_notification = notifications::where('UID' ,$user_id)->where('from', Auth::id())->where('type', 'follow_request');
+
+        $find_notification->delete();
     }
     public function unfollow($user_id){ 
 
