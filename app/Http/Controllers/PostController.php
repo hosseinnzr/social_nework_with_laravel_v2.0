@@ -216,10 +216,14 @@ class PostController extends Controller
             $inputs['tag'] = substr(str_replace(',,', ',', str_replace('#', ',',str_replace(' ', '', $inputs['tag']))), 1);
 
             // update explore algorithm
-            $pythonFile = public_path('explore_Algorithm/explore_algorithm.py');
-            $output = shell_exec('C:\Users\nazar\AppData\Local\Programs\Python\Python312\python.exe '. $pythonFile);
+            // $pythonFile = public_path('explore_Algorithm/update_model.py');
+            $pythonFile = 'C:/Users/nazar/Documents/GitHub/social_nework_with_laravel_v2.0/public/explore_algorithm/update_model.py';
+            $pythonExe = 'C:\\Users\\nazar\\AppData\\Local\\Programs\\Python\\Python312\\python.exe';
 
-            notify()->success('Add post successfully!');
+            // اجرای فایل پایتون و گرفتن خروجی خطاها
+            $output = shell_exec($pythonExe . ' ' . $pythonFile);
+
+            notify()->success('Add post successfully!'. $output);
             // notify()->success($output);
           
             return redirect()->route('post.store', ['id'=> $post->id])
@@ -280,10 +284,14 @@ class PostController extends Controller
             $post->update($inputs);
 
             // update explore algorithm
-            $pythonFile = public_path('explore_Algorithm/explore_algorithm.py');
-            $output = shell_exec('C:\Users\nazar\AppData\Local\Programs\Python\Python312\python.exe '. $pythonFile);
+            // $pythonFile = public_path('explore_Algorithm/update_model.py');
+            $pythonFile = 'C:/Users/nazar/Documents/GitHub/social_nework_with_laravel_v2.0/public/explore_algorithm/update_model.py';
+            $pythonExe = 'C:\\Users\\nazar\\AppData\\Local\\Programs\\Python\\Python312\\python.exe';
 
-            notify()->success('Update post successfully!');
+            // اجرای فایل پایتون و گرفتن خروجی خطاها
+            $output = shell_exec($pythonExe . ' ' . $pythonFile);
+            
+            notify()->success('Update post successfully!'. $output);
 
             return redirect()
                 ->route('post', ['id' => $post->id])
@@ -307,52 +315,4 @@ class PostController extends Controller
         return redirect()->back();
     }
 
-    public function like(Request $request){
-
-        $id = $request->postId;
-        $is_liked = false;
-        $user_liked_id = auth::id();
-
-        $post = Post::findOrFail($id);
-        $post_like = $post->like;
-
-        $post_liked_array = explode(",", $post_like);
-
-        foreach($post_liked_array as $like_number){
-
-            if ($user_liked_id == $like_number){
-                $post_liked_array = array_diff($post_liked_array, array($like_number));
-                $like = implode(",", $post_liked_array);
-                $is_liked = true;
-                break;
-            }
-        }
-
-        if(!$is_liked){
-            if ($post->like != NULL) {
-                $like = $post->like . ',' . $user_liked_id;
-            } else {
-                $like = $post->like . $user_liked_id;   
-            }
-        }
-
-        // save like
-        $post->like = $like;
-        $post->save();
-
-            if ($post->like == ""){
-                $like_number = 0;
-            }else{
-                $like_number = count(explode(",", $post->like));
-            }
-        
-        // save like_number
-        $post->like_number = $like_number;
-        $post->save();
-
-        return response()->json(['massage'=> $like_number]);
-
-        // return back();
-
-    }
 }
