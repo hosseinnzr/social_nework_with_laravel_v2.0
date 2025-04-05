@@ -6,6 +6,8 @@ use App\Models\Post;
 use App\Models\User;
 use App\Models\story;
 use App\Models\follow;
+use App\Models\likePost;
+use App\Models\savePost;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -78,30 +80,59 @@ class PostController extends Controller
     public function explore(Request $request){
         if(auth::check()){
 
-            $user_following = explode(",", Auth::user()->following);
-            $user_follower = explode(",", Auth::user()->followers);
+            $user_liked_post = likePost::where('UID', Auth::id())->pluck('post_id')->toArray();
+            // $user_saved_post = savePost::where('UID', Auth::id());
+            // dd($user_liked_post);
+            $liked_posts = Post::where('delete', 0)->whereIn('id', $user_liked_post)->get();
+            // dd($liked_posts);
+            $found_image_name = [];
 
-            $signin_user_id = Auth::id();
+            foreach ($liked_posts as $post) {
+                $pythonFilePath = public_path('explore_algorithm/find_image.py');
+                $pythonFile = '"' . $pythonFilePath . '" "' . $post->post_picture . '"';
 
-            $new_users = User::all()->sortByDesc('id')->whereNotIn('id', $user_following)->whereNotIn('id', $user_follower)->where('id', '!=', $signin_user_id)->take(5);
+                $pythonExe = 'C:\\Users\\nazar\\AppData\\Local\\Programs\\Python\\Python312\\python.exe';
+            
+                $output = shell_exec($pythonExe . ' ' . $pythonFile);
 
-            $posts = Post::latest()->where('delete', 0)->where('UID', '!=', auth::id())->get();
+                $jsonString = str_replace("'", '"', $output);
+                $array = json_decode($jsonString, true);
+            
+                $found_image_name = array_merge($found_image_name, $array);
+            }
+            
+            
+            $found_image_name = array_unique($found_image_name);
 
             $hash_tag = null;
             
-            if(isset($request->tag)){
-                $hash_tag = $request->tag;
-                $result = array();
-                foreach ($posts as $post) {
-                    $post_array = explode(',', $post['tag']);
-                    if ((in_array($request->tag, $post_array)) == true){
-                        array_push($result, $post);
-                    }
-                    $posts=$result;
-                } 
+            // if(isset($request->tag)){
+
+
+            //     $new_users = User::all()->sortByDesc('id')->whereNotIn('id', $user_following)->whereNotIn('id', $user_follower)->where('id', '!=', $signin_user_id)->take(5);
+
+            //     $posts = Post::where('delete', 0)->whereIn('id', $user_liked_post)->get();
+
+            //     $hash_tag = $request->tag;
+            //     $result = array();
+            //     foreach ($posts as $post) {
+            //         $post_array = explode(',', $post['tag']);
+            //         if ((in_array($request->tag, $post_array)) == true){
+            //             array_push($result, $post);
+            //         }
+            //         $posts=$result;
+            //     } 
+            // }
+
+            $find_posts = Post::where('delete', 0);
+
+            if ($found_image_name != []) {
+                $posts = $find_posts->whereIn('post_picture', $found_image_name)->get();
+            } else {
+                $posts = $find_posts->get();
             }
 
-            
+            $find_posts = $find_posts->get();
             foreach ($posts as $post) {
                 $user = User::where('id', $post->UID)->select('id', 'user_name', 'profile_pic')->first();
                 $post['user_id'] = $user['id'];
@@ -109,15 +140,15 @@ class PostController extends Controller
                 $post['user_profile_pic'] = $user['profile_pic'];
             }
 
-            $follower_user = User::whereIn('id', $user_follower)->select('user_name', 'first_name', 'last_name', 'profile_pic')->get();
-            $following_user = User::whereIn('id', $user_following)->select('user_name', 'first_name', 'last_name', 'profile_pic')->get();
+            $follower_user = follow::where('following_id', Auth::id())->get();
+            $following_user = follow::where('follower_id', Auth::id())->get();
 
             return view('pages.explore', [
                 'hash_tag' => $hash_tag,
-                'posts' => $posts,
+                'posts' => $find_posts,
                 'follower_user' => $follower_user,
                 'following_user' => $following_user,
-                'new_users' => $new_users,
+                // 'new_users' => $new_users,
             ]);    
             
         } else {
@@ -200,7 +231,7 @@ class PostController extends Controller
                 // Save the image to the public directory
                 $img->save(public_path('post-picture/' . $imageName));
 
-                $inputs['post_picture'] = '/post-picture/' . $imageName;
+                $inputs['post_picture'] = $imageName;
             }
 
             $inputs['UID'] = Auth::id();
@@ -223,7 +254,7 @@ class PostController extends Controller
             // اجرای فایل پایتون و گرفتن خروجی خطاها
             $output = shell_exec($pythonExe . ' ' . $pythonFile);
 
-            notify()->success('Add post successfully!'. $output);
+            notify()->success('Add post successfully!');
             // notify()->success($output);
           
             return redirect()->route('post.store', ['id'=> $post->id])
@@ -273,7 +304,7 @@ class PostController extends Controller
                 // Save the image to the public directory
                 $img->save(public_path('post-picture/' . $imageName));
 
-                $inputs['post_picture'] = '/post-picture/' . $imageName;
+                $inputs['post_picture'] = $imageName;
             }
 
             // Organize hash tag

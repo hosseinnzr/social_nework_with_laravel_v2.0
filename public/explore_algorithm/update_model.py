@@ -21,7 +21,7 @@ if not os.path.exists(image_path):
 model = ResNet50(weights='imagenet', include_top=False, pooling='avg')
 
 # خواندن نام فایل‌های تصویری
-image_files = [f for f in os.listdir(image_path) if f.lower().endswith(('.png', '.jpg', '.jpeg'))]
+image_files = [f for f in os.listdir(image_path) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.webp'))]
 print(f"Found {len(image_files)} images.")
 
 # تابع خواندن و پیش‌پردازش تصویر

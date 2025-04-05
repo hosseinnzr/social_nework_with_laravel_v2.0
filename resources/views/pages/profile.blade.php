@@ -127,7 +127,7 @@
                       <div class="col-4 col-lg-4 position-relative">
 
                         <div data-bs-toggle="modal" data-bs-target="#showComments{{$post['id']}}" aria-controls="offcanvasChat">
-                          <img class="img-fluid" src={{$post['post_picture']}} alt="">
+                          <img class="img-fluid" src='/post-picture/{{$post['post_picture']}}' alt="">
                         </div>
 
                         <!-- scroll show post START -->
@@ -179,7 +179,7 @@
 
                                     <div class="col-12 col-lg-6">
                                       @isset($post['post_picture'])
-                                      <img class="card-img" src="{{$post['post_picture']}}" alt="Post">
+                                      <img class="card-img" src="/post-picture/{{$post['post_picture']}}" alt="Post">
                                       @endisset 
                                       <br>
                                       <ul class="nav nav-fill nav-stack small">
@@ -282,7 +282,7 @@
                       <div class="col-4 col-lg-4 position-relative">
 
                         <div data-bs-toggle="modal" data-bs-target="#showSavePost{{$save_post['id']}}" aria-controls="offcanvasChat">
-                          <img class="img-fluid" src={{$save_post['post_picture']}} alt="">
+                          <img class="img-fluid" src='/post-picture/{{$save_post['post_picture']}}' alt="">
                         </div>
 
                             <!-- scroll show post START -->
@@ -347,7 +347,7 @@
 
                                         <div class="col-12 col-lg-6">
                                           @isset($save_post['post_picture'])
-                                          <img class="card-img" src="{{$save_post['post_picture']}}" alt="Post">
+                                          <img class="card-img" src="/post-picture/{{$save_post['post_picture']}}" alt="Post">
                                           @endisset 
                                           <br>
                                           <ul class="nav nav-fill nav-stack small">

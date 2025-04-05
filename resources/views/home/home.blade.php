@@ -201,7 +201,7 @@
               <!-- Card body START -->
               <div class="card-body">
                   @isset($post['post_picture'])
-                  <img class="card-img" src="{{$post['post_picture']}}" alt="Post">
+                  <img class="card-img" src="/post-picture/{{$post['post_picture']}}" alt="Post">
                   <br>    
                   @endisset 
 
@@ -248,7 +248,7 @@
 
                               <div class="col-12 col-lg-6">
                                 @isset($post['post_picture'])
-                                <img class="card-img" src="{{$post['post_picture']}}" alt="Post">
+                                <img class="card-img" src="/post-picture/{{$post['post_picture']}}" alt="Post">
                                 @endisset 
                                 <br>
                                 <ul class="nav nav-fill nav-stack small">

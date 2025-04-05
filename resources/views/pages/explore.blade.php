@@ -70,7 +70,7 @@
               <div style="padding: 2px; margin: 0px" class="col-4 col-lg-4 position-relative">
 
                 <div data-bs-toggle="modal" data-bs-target="#showSavePost{{$post['id']}}" aria-controls="offcanvasChat">
-                  <img class="img-fluid" src={{$post['post_picture']}} alt="">
+                  <img class="img-fluid" src='/post-picture/{{$post['post_picture']}}' alt="">
                 </div>
 
                     <!-- scroll show post START -->
@@ -109,7 +109,7 @@
                                   <li><a style="color: rgb(10, 0, 195)" class="dropdown-item" type="submit" href="{{ route('post', ['id' => $post['id']]) }}"> <i class="bi bi-pencil fa-fw pe-2"></i>Edit post</a></li>
                                   <li><a class="dropdown-item" href="/p/{{$post['id']}}"> <i class="bi bi-file-post-fill"></i> view post</a></li>
                                   <li><a class="dropdown-item" href="#"> <i class="bi bi-archive fa-fw pe-2"></i>Archive</a></li>
-                                  <li><a style="color: red" class="dropdown-item" type="submit" href="{{ route('delete', ['id' => $post['id']]) }}"> <i class="bi bi-x-circle fa-fw pe-2"></i>Delete post</a></li>
+                                  {{-- <li><a style="color: red" class="dropdown-item" type="submit" href="{{ route('delete', ['id' => $post['id']]) }}"> <i class="bi bi-x-circle fa-fw pe-2"></i>Delete post</a></li> --}}
                                 </ul>
                                 @else
                                 {{-- <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardShareAction8">
@@ -135,7 +135,7 @@
 
                                 <div class="col-12 col-lg-6">
                                   @isset($post['post_picture'])
-                                  <img class="card-img" src="{{$post['post_picture']}}" alt="Post">
+                                  <img class="card-img" src="/post-picture/{{$post['post_picture']}}" alt="Post">
                                   @endisset 
                                   <br>
                                   <ul class="nav nav-fill nav-stack small">
@@ -308,11 +308,6 @@
 
 </main>
 
-  <!-- Show follower/following START -->
-    <x-show-follower-following :following="$following_user" :follower="$follower_user" />
-  <!-- Show follower/following END -->
-
-    
 @endauth
 
 @endsection    
