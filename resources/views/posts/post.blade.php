@@ -31,7 +31,7 @@
                     <!-- post picture -->
                     <div class="col-sm-12 col-lg-12">
                       @isset($post['post_picture'])
-                        <img class="card-img" src="{{$post['post_picture']}}" alt="Post">
+                        <img class="card-img" src="/post-picture/{{$post['post_picture']}}" alt="Post">
                       @endisset
 
                       <br>

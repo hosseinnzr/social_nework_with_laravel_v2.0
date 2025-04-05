@@ -52,14 +52,13 @@ class AddComments extends Component
 
     }
 
-    public function like($single_comment)
+    public function like($comment_id)
     {
-        if(!likeComment::where('UID',auth::id())->where('comment_id', $single_comment['id'])->exists())
+        if(!likeComment::where('UID',auth::id())->where('comment_id', $comment_id)->exists())
         {
             $check = likeComment::create([
                 'UID' => auth::id(),
-                'comment_id' => $single_comment['id'],
-                'user_comment_id' => $single_comment['UID']
+                'comment_id' => $comment_id,
                 // 'type'=> 'like',
             ]);
 
@@ -82,16 +81,29 @@ class AddComments extends Component
             // error
         }
     }
+
+    public function delete($single_comment){
+        $id = $single_comment['id'];
+
+        $find_comment = Comments::findOrFail($id);
+
+        $check = $find_comment->update(['isDeleted' => 1]);
+
+        if(!$check){
+            // error
+        }
+    }
+
     public function render()
     {
         // load more
-        $this->comment_number = count(comments::latest()->where('post_id', $this->postId)->get());
+        $this->comment_number = count(comments::latest()->where('post_id', $this->postId)->where('isDeleted', 0)->get());
 
         if($this->amount >= $this->comment_number){
             $this->show_load_more = false;
         }
 
-        $this->post_comments = comments::latest()->where('post_id', $this->postId)->limit($this->amount)->get();
+        $this->post_comments = comments::latest()->where('post_id', $this->postId)->where('isDeleted', 0)->limit($this->amount)->get();
 
         // check liked
         foreach($this->post_comments as $single_comment){

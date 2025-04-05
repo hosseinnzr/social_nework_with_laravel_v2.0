@@ -9,7 +9,7 @@
         </div>
 
         <!-- Comment box START -->
-        <div  class="offcanvas-body p-0">
+        <div class="offcanvas-body p-0">
             <div style="position: sticky; top: 500;" class=" rounded-end-lg-0 w-full border-end-lg-0">
                 <!-- add comment START -->
 
@@ -47,11 +47,23 @@
                             <div class="d-flex justify-content-between">
                             <p class="mb-1"> <a href="/user/{{$single_comment['user_name']}}"> {{$single_comment['user_name']}} </a></p>
                             
-                            <div style="text-align: center">
+                            <div class="d-flex align-items-center justify-content-between">
                                 @if ($single_comment['liked'])
                                     <button style="color:red" wire:click="dislike({{$single_comment}})"><i class="bi bi-heart-fill "></i></button>
                                 @else
-                                    <button wire:click="like({{$single_comment}})"><i class="bi bi-heart "></i></button>
+                                    <button wire:click="like({{$single_comment['id']}})"><i class="bi bi-heart "></i></button>
+                                @endif
+
+                                @if ($single_comment['UID'] == Auth::id())
+                                    <!-- Card share action menu -->
+                                    <a href="#" class="text-secondary btn py-0 px-2" id="commentAction{{$single_comment['id']}}" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="bi bi-three-dots"></i>
+                                    </a>
+    
+                                    <!-- Card share action dropdown menu -->    
+                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="commentAction{{$single_comment['id']}}">
+                                        <li><button class="dropdown-item text-danger" wire:click="delete({{$single_comment}})"> <i class="bi bi-bookmark fa-fw pe-2 "></i>delete commnet</button></li>
+                                    </ul>                                     
                                 @endif
                             </div>    
 
@@ -100,5 +112,20 @@
         @endif
     </ul>
     <!-- Comment wrap END -->
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // زمانی که هر dropdown باز میشه
+            document.querySelectorAll('.dropdown').forEach(function (dropdown) {
+                dropdown.addEventListener('shown.bs.dropdown', function () {
+                    // پیدا کردن تمام <li>هایی که wire:poll.visible دارن
+                    document.querySelectorAll('li[wire\\:poll\\.visible]').forEach(function (pollingLi) {
+                        pollingLi.removeAttribute('wire:poll.visible');
+                    });
+                });
+            });
+        });
+    </script>
+    
     
 </div>

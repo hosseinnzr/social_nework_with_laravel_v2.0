@@ -21,6 +21,7 @@ class comments extends Model
         'comment_value',
         'UID',
         'user_name',
-        'user_profile'
+        'user_profile',
+        'isDeleted'
     ];
 }
