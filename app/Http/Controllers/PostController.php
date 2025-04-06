@@ -15,6 +15,8 @@ use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Arr;
+use Symfony\Component\VarDumper\VarDumper;
 
 class PostController extends Controller
 {   
@@ -82,22 +84,21 @@ class PostController extends Controller
 
             $user_liked_post = likePost::where('UID', Auth::id())->pluck('post_id')->toArray();
             // $user_saved_post = savePost::where('UID', Auth::id());
-            // dd($user_liked_post);
             $liked_posts = Post::where('delete', 0)->whereIn('id', $user_liked_post)->get();
-            // dd($liked_posts);
             $found_image_name = [];
 
             foreach ($liked_posts as $post) {
                 $pythonFilePath = public_path('explore_algorithm/find_image.py');
-                $pythonFile = '"' . $pythonFilePath . '" "' . $post->post_picture . '"';
-
                 $pythonExe = 'C:\\Users\\nazar\\AppData\\Local\\Programs\\Python\\Python312\\python.exe';
-            
-                $output = shell_exec($pythonExe . ' ' . $pythonFile);
+                $imageFileName = $post->post_picture;
 
-                $jsonString = str_replace("'", '"', $output);
-                $array = json_decode($jsonString, true);
-            
+                $command = '"' . $pythonExe . '" "' . $pythonFilePath . '" "' . $imageFileName . '"';
+                $output = shell_exec($command);
+                
+                $lines = explode("\n", trim($output));
+
+                $array = array_filter(array_map('trim', $lines));
+
                 $found_image_name = array_merge($found_image_name, $array);
             }
             
@@ -129,7 +130,7 @@ class PostController extends Controller
             if ($found_image_name != []) {
                 $posts = $find_posts->whereIn('post_picture', $found_image_name)->get();
             } else {
-                $posts = $find_posts->get();
+                $posts = $find_posts->orderBy('created_at', 'desc')->get();
             }
 
             $find_posts = $find_posts->get();
@@ -160,7 +161,7 @@ class PostController extends Controller
         if(auth::check()){
             $post = post::findOrFail($id);
             $user = User::findOrFail($post->UID);
-            // dd($user['id'] . $post['UID']);
+
             if(follow::where('follower_id',auth::id())->where('following_id', $post->UID)->exists() || $user['privacy'] == 'public' || Auth::id() == $post['UID']){
                 $post['user_id'] = $user['id'];
                 $post['user_name'] = $user['user_name'];
@@ -247,15 +248,12 @@ class PostController extends Controller
             $inputs['tag'] = substr(str_replace(',,', ',', str_replace('#', ',',str_replace(' ', '', $inputs['tag']))), 1);
 
             // update explore algorithm
-            // $pythonFile = public_path('explore_Algorithm/update_model.py');
-            $pythonFile = 'C:/Users/nazar/Documents/GitHub/social_nework_with_laravel_v2.0/public/explore_algorithm/update_model.py';
+            $pythonFilePath = public_path('explore_algorithm/update_model.py');
             $pythonExe = 'C:\\Users\\nazar\\AppData\\Local\\Programs\\Python\\Python312\\python.exe';
 
-            // اجرای فایل پایتون و گرفتن خروجی خطاها
-            $output = shell_exec($pythonExe . ' ' . $pythonFile);
-
+            $command = '"' . $pythonExe . '" "' . $pythonFilePath . '"';
+            $output = shell_exec($command);
             notify()->success('Add post successfully!');
-            // notify()->success($output);
           
             return redirect()->route('post.store', ['id'=> $post->id])
               ->with('success', true);
@@ -265,7 +263,6 @@ class PostController extends Controller
         }
     }
 
-    
     public function update(Request $request){
 
         if (isset($request->id)) {
@@ -315,13 +312,12 @@ class PostController extends Controller
             $post->update($inputs);
 
             // update explore algorithm
-            // $pythonFile = public_path('explore_Algorithm/update_model.py');
-            $pythonFile = 'C:/Users/nazar/Documents/GitHub/social_nework_with_laravel_v2.0/public/explore_algorithm/update_model.py';
+            $pythonFilePath = public_path('explore_algorithm/update_model.py');
             $pythonExe = 'C:\\Users\\nazar\\AppData\\Local\\Programs\\Python\\Python312\\python.exe';
 
-            // اجرای فایل پایتون و گرفتن خروجی خطاها
-            $output = shell_exec($pythonExe . ' ' . $pythonFile);
-            
+            $command = '"' . $pythonExe . '" "' . $pythonFilePath . '"';
+            $output = shell_exec($command);
+        
             notify()->success('Update post successfully!'. $output);
 
             return redirect()

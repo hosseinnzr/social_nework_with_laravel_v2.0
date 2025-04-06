@@ -1,54 +1,42 @@
+import csv
 import sys
-from pymilvus import connections, Collection
+import os
 
-# اطلاعات اتصال به Milvus
-MILVUS_HOST = "localhost"
-MILVUS_PORT = "19530"
-COLLECTION_NAME = "image_data"
+# مسیر فایل CSV مرتب‌شده
+csv_file = r"C:\Users\nazar\Documents\GitHub\social_nework_with_laravel_v2.0\public\explore_algorithm\files\sorted_images.csv"
 
-def connect_to_milvus():
-    """اتصال به پایگاه داده Milvus"""
-    connections.connect(alias="default", host=MILVUS_HOST, port=MILVUS_PORT)
-
-def get_images_from_milvus():
-    """دریافت نام تمام تصاویر از دیتابیس و مرتب‌سازی آن‌ها"""
-    collection = Collection(COLLECTION_NAME)
-    collection.load()
-
-    # دریافت همه تصاویر از پایگاه داده
-    results = collection.query(expr="image_name != ''", output_fields=["image_name"])
-
-    # تبدیل لیست دیکشنری‌ها به لیست نام تصاویر و مرتب کردن آن‌ها
-    return sorted([res["image_name"] for res in results])
-
-def get_surrounding_images(image_list, target_image, num_neighbors=7):
-    """دریافت ۵ عکس قبل، خود عکس و ۵ عکس بعد از یک عکس مشخص"""
-    if target_image not in image_list:
+def get_neighbors(image_name, num_neighbors=7):
+    # بررسی وجود فایل CSV
+    if not os.path.exists(csv_file):
+        print(f"فایل CSV یافت نشد: {csv_file}")
         return []
 
-    index = image_list.index(target_image)
+    # خواندن لیست تصاویر مرتب‌شده
+    with open(csv_file, mode='r', encoding='utf-8') as file:
+        reader = csv.reader(file)
+        ordered_images = [row[0] for row in reader if row]
 
-    # دریافت ۵ عکس قبل و بعد
-    before_images = image_list[max(0, index - num_neighbors):index]
-    after_images = image_list[index + 1: index + 1 + num_neighbors]
+    if image_name not in ordered_images:
+        # print(f"تصویر '{image_name}' در فایل وجود ندارد.")
+        return []
 
-    return before_images + [target_image] + after_images
+    index = ordered_images.index(image_name)
+    start = max(0, index - num_neighbors)
+    end = min(len(ordered_images), index + num_neighbors + 1)
 
-def main():
+    neighbors = ordered_images[start:end]
+
+    # print(f"\nتصاویر نزدیک به '{image_name}':\n")
+    for img in neighbors:
+        print(img)
+
+    return neighbors
+
+# دریافت نام عکس از خط فرمان
+if __name__ == "__main__":
     if len(sys.argv) != 2:
+        # print("نحوه استفاده:\npython find_image.py نام_فایل_عکس.jpg")
         sys.exit(1)
 
-    target_image = sys.argv[1]
-
-    # اتصال به Milvus و دریافت لیست تصاویر
-    connect_to_milvus()
-    image_list = get_images_from_milvus()
-
-    # دریافت تصاویر قبل و بعد
-    surrounding_images = get_surrounding_images(image_list, target_image)
-
-    # چاپ لیست نهایی بدون متن اضافی
-    print(surrounding_images)
-
-if __name__ == "__main__":
-    main()
+    image_name = sys.argv[1]
+    get_neighbors(image_name.strip())
