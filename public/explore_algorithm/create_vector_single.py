@@ -23,9 +23,9 @@ transform = transforms.Compose([
                          std=[0.229, 0.224, 0.225])
 ])
 
-INDEX_FILE = "image_index.index"
-NAMES_FILE = "image_names.npy"
-FEATURES_FOLDER = "features"
+INDEX_FILE = "explore_algorithm/image_index.index"
+NAMES_FILE = "explore_algorithm/image_names.npy"
+FEATURES_FOLDER = "explore_algorithm/features"
 
 def extract_feature_vector(image_path):
     """Extract feature vector from image using ResNet50"""

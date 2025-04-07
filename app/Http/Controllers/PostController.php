@@ -84,24 +84,25 @@ class PostController extends Controller
             $liked_posts = Post::where('delete', 0)->whereIn('id', $user_liked_post)->get();
             $found_image_name = [];
 
+            // python find_similar_faiss.py 12323423.png 5
+
             foreach ($liked_posts as $post) {
-                $pythonFilePath = public_path('explore_algorithm/find_image.py');
+                $imageName = $post->post_picture;
+
+                $pythonFilePath = public_path('explore_algorithm/find_similar.py') . ' ' . $imageName;
                 $pythonExe = 'C:\\Users\\nazar\\AppData\\Local\\Programs\\Python\\Python312\\python.exe';
-                $imageFileName = $post->post_picture;
 
-                $command = '"' . $pythonExe . '" "' . $pythonFilePath . '" "' . $imageFileName . '"';
+                $command = '' . $pythonExe . ' ' . $pythonFilePath . ' ';
                 $output = shell_exec($command);
-                
-                $lines = explode("\n", trim($output));
 
-                $array = array_filter(array_map('trim', $lines));
+                $clean = str_replace(["[", "]", "'"], "", $output);
+                $array = explode(", ", $clean);
 
                 $found_image_name = array_merge($found_image_name, $array);
             }
             
-            
             $found_image_name = array_unique($found_image_name);
-
+            // dd($found_image_name);
             $hash_tag = null;
             
             // if(isset($request->tag)){
@@ -122,12 +123,17 @@ class PostController extends Controller
             //     } 
             // }
 
-            $find_posts = Post::where('delete', 0);
+            
+            $find_posts = Post::where('delete', 0)->orderBy('created_at', 'desc');
 
-            if ($found_image_name != []) {
-                $posts = $find_posts->whereIn('post_picture', $found_image_name)->get();
-            } else {
-                $posts = $find_posts->orderBy('created_at', 'desc')->get();
+            if (!empty($found_image_name)) {
+                $posts = $find_posts->where(function ($query) use ($found_image_name) {
+                    foreach ($found_image_name as $name) {
+                        $query->orWhere('post_picture', 'like', '%' . trim($name) . '%');
+                    }
+                });
+            }else{
+                $posts = $find_posts->get();
             }
 
             $find_posts = $find_posts->get();
@@ -252,7 +258,7 @@ class PostController extends Controller
 
             $output = shell_exec($command);
 
-            notify()->success('Add post successfully!' . $output);
+            notify()->success('Add post successfully!');
             
             return redirect()->route('post.store', ['id'=> $post->id])
               ->with('success', true);
