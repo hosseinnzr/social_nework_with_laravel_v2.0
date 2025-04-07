@@ -51,7 +51,7 @@ class SendPost extends Component
                     'conversation_id' => $this->conversation_id,
                     'sender_id' => auth()->id(),
                     'receiver_id' => $user_id,
-                    'body' => $post_address,
+                    'body' => '/post-picture/'.$post_address,
                 ]);
 
                 if($createdMessage){

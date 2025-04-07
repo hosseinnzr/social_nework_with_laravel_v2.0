@@ -7,7 +7,6 @@ use App\Models\User;
 use App\Models\story;
 use App\Models\follow;
 use App\Models\likePost;
-use App\Models\savePost;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,8 +14,6 @@ use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Arr;
-use Symfony\Component\VarDumper\VarDumper;
 
 class PostController extends Controller
 {   
@@ -248,13 +245,15 @@ class PostController extends Controller
             $inputs['tag'] = substr(str_replace(',,', ',', str_replace('#', ',',str_replace(' ', '', $inputs['tag']))), 1);
 
             // update explore algorithm
-            $pythonFilePath = public_path('explore_algorithm/update_model.py');
+            $pythonFilePath = public_path('explore_algorithm/create_vector_single.py') . ' ' . $imageName;
             $pythonExe = 'C:\\Users\\nazar\\AppData\\Local\\Programs\\Python\\Python312\\python.exe';
+            
+            $command = '' . $pythonExe . ' ' . $pythonFilePath . '';
 
-            $command = '"' . $pythonExe . '" "' . $pythonFilePath . '"';
             $output = shell_exec($command);
-            notify()->success('Add post successfully!');
-          
+
+            notify()->success('Add post successfully!' . $output);
+            
             return redirect()->route('post.store', ['id'=> $post->id])
               ->with('success', true);
 
@@ -312,12 +311,13 @@ class PostController extends Controller
             $post->update($inputs);
 
             // update explore algorithm
-            $pythonFilePath = public_path('explore_algorithm/update_model.py');
+            $pythonFilePath = public_path('explore_algorithm/create_vector_single.py') . ' ' . $imageName;
             $pythonExe = 'C:\\Users\\nazar\\AppData\\Local\\Programs\\Python\\Python312\\python.exe';
+            
+            $command = '' . $pythonExe . ' ' . $pythonFilePath . '';
 
-            $command = '"' . $pythonExe . '" "' . $pythonFilePath . '"';
             $output = shell_exec($command);
-        
+
             notify()->success('Update post successfully!'. $output);
 
             return redirect()
