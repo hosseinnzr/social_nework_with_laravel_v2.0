@@ -34,7 +34,8 @@ def find_similar_images_faiss(query_vector_path, top_k=10):
 
         for idx in indices[0]:
             if 0 <= idx < len(image_names):
-                image_name = os.path.splitext(image_names[idx])[0]
+                image_name = str(os.path.splitext(image_names[idx])[0])
+
                 similar_images.append(image_name)
 
     except Exception as e:
@@ -57,10 +58,6 @@ def main():
         print(top_k_images)
     else:
         print("No similar images found. Showing default or fallback images.")
-        # Optional: load default similar image names or print a placeholder
-        # Example:
-        # print(["default1", "default2"])
-        # or return some random images
         if os.path.exists(NAMES_FILE):
             try:
                 all_names = np.load(NAMES_FILE)
