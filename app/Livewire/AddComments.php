@@ -5,6 +5,7 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Models\comments;
 use App\Models\likeComment;
+use App\Models\notifications;
 use Illuminate\Support\Facades\Auth;
 
 class AddComments extends Component
@@ -41,6 +42,14 @@ class AddComments extends Component
 
         if($input['comment_value'] != null){
             Comments::create($input);
+
+            // send notifiction
+            notifications::create([
+                'from' => auth::id(),
+                'to' => $this->post['UID'],
+                'body' => $this->comment,
+                'type'=> 'comment',
+            ]);
         }
 
         $this->comment = '';

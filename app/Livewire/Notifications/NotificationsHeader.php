@@ -17,7 +17,7 @@ class NotificationsHeader extends Component
     public function delete($notificationid)
     {
         $notification = notifications::findOrFail($notificationid);
-        $notification->seen = 1;
+        $notification->seen = "1";
         $notification->save();
     }
 
@@ -38,7 +38,7 @@ class NotificationsHeader extends Component
     {
 
         $this->user_notifications = notifications::latest()
-            ->where('UID', Auth::id())
+            ->where('to', Auth::id())
             ->where('seen', 0)
             ->where('delete', '0')
             // ->limit(10)

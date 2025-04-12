@@ -5,6 +5,7 @@ namespace App\Livewire;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Post;
 use App\Models\likePost as like_post;
+use App\Models\notifications;
 use Livewire\Component;
 
 class LikePost extends Component
@@ -21,6 +22,14 @@ class LikePost extends Component
                 'post_id' => $post['id'],
                 // 'type'=> 'like',
                 'user_post_id' => $post['UID'],
+            ]);
+
+            // send notifiction
+            notifications::create([
+                'from' => auth::id(),
+                'to' => $post['UID'],
+                'body' => auth::user()->user_name,
+                'type'=> 'like',
             ]);
         }
     }

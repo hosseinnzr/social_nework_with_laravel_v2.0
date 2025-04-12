@@ -25,13 +25,12 @@ class Follow extends Component
             ]);
         }
 
-        // send notifiction
+        // send follow notifiction
         notifications::create([
-            'UID' =>$user_id,
-            'body' => Auth::user()->user_name,
+            'from' => auth::id(),
+            'to' => $user_id,
+            'body' => auth::user()->user_name,
             'type'=> 'follow',
-            'from' => '',
-            'user_profile' => Auth::user()->profile_pic,
         ]);
 
         $user = User::where('id', $user_id);
@@ -59,13 +58,12 @@ class Follow extends Component
             ]);
         }
 
-        // send notifiction
+        // send request notifiction
         notifications::create([
-            'UID' =>$user_id,
-            'body' => Auth::user()->user_name,
+            'from' => auth::id(),
+            'to' => $user_id,
+            'body' => auth::user()->user_name,
             'type'=> 'follow_request',
-            'from' => Auth::id(),
-            'user_profile' => Auth::user()->profile_pic,
         ]);
 
         $user = User::where('id', $user_id);
@@ -86,7 +84,7 @@ class Follow extends Component
         $find_follow_user->delete();
 
         // delete notification request
-        $find_notification = notifications::where('UID' ,$user_id)->where('from', Auth::id())->where('type', 'follow_request');
+        $find_notification = notifications::where('to' ,$user_id)->where('from', Auth::id())->where('type', 'follow_request');
 
         $find_notification->delete();
     }

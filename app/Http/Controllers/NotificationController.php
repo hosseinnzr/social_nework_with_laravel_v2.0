@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 class NotificationController extends Controller
 {
     public function index(){
-        $notifications = notifications::latest()->where('UID', Auth::id())->where('delete', '0')->get();
+        $notifications = notifications::latest()->where('to', Auth::id())->where('delete', '0')->get();
         return view('pages.notifications',[
             'user_notifications' => $notifications,
         ]);

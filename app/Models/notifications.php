@@ -12,12 +12,12 @@ class notifications extends Model
     protected $table = 'notifications';
 
     protected $fillable = [
-        'UID',
         'body',
         'user_profile',
         'type',
         'from',
         'seen',
-        'delete'
+        'delete',
+        'to'
     ];
 }

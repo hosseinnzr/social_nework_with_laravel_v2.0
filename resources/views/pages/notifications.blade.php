@@ -87,7 +87,7 @@
                                         <!-- Card feed action dropdown menu -->
                                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction">
                                             <li>        
-                                                <button class="dropdown-item" wire:click="delete({{$user_notification->id}})"><i class="bi bi-check-all"> </i> Mard as Read</a></button>
+                                                <button class="dropdown-item" wire:click="delete({{$user_notification->id}})"><i class="bi bi-check-all"> </i> Mark as Read</a></button>
                                             </li>
                                             <li><a class="dropdown-item" href="{{$user_notification->url}}"> <i class="bi bi-file-post-fill"></i> view post</a></li>
                                         </ul>
@@ -130,7 +130,7 @@
                                         <!-- Card feed action dropdown menu -->
                                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction">
                                             <li>        
-                                                <button class="dropdown-item" wire:click="delete({{$user_notification->id}})"><i class="bi bi-check-all"> </i> Mard as Read</a></button>
+                                                <button class="dropdown-item" wire:click="delete({{$user_notification->id}})"><i class="bi bi-check-all"> </i> Mark as Read</a></button>
                                             </li>        
                                         </ul>
                                     </div>
@@ -191,7 +191,7 @@
                                       <!-- Card feed action dropdown menu -->
                                       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction">
                                           <li>        
-                                              <button class="dropdown-item" wire:click="delete({{$user_notification->id}})"><i class="bi bi-check-all"> </i> Mard as Read</a></button>
+                                              <button class="dropdown-item" wire:click="delete({{$user_notification->id}})"><i class="bi bi-check-all"> </i> Mark as Read</a></button>
                                           </li>        
                                       </ul>
                                   </div>
@@ -236,7 +236,7 @@
                                         <!-- Card feed action dropdown menu -->
                                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction">
                                             <li>        
-                                                <button class="dropdown-item" wire:click="delete({{$user_notification->id}})"><i class="bi bi-check-all"> </i> Mard as Read</a></button>
+                                                <button class="dropdown-item" wire:click="delete({{$user_notification->id}})"><i class="bi bi-check-all"> </i> Mark as Read</a></button>
                                             </li>        
                                         </ul>
                                     </div>
@@ -245,28 +245,51 @@
                               </div>
                             </li>
                             <!-- follow Notif END -->
-                        @elseif ($user_notification->type == 'message')
-                            <!-- Notif item -->
-                            <li class="mb-1">
-                              <div
-                              @if ($user_notification['seen'] == 0)
-                                class="list-group-item rounded badge-unread d-flex border-0 p-3 justify-content-between"
-                              @else
-                                class="list-group-item rounded d-flex border-0 p-3 justify-content-between"
-                              @endif
-                              >
-                                  <div class="avatar text-center d-sm-inline-block">
-                                      <img class="avatar-img rounded-circle" src="{{ asset("assets/images/avatar/02.jpg") }}" alt="">
-                                  </div>
-                                  <div class="ms-sm-3 d-flex">
-                                      <div>
-                                      <p class="small mb-2">Wish <b>Amanda Reed</b> a happy birthday (Nov 12)</p>
-                                      <button class="btn btn-sm btn-outline-light py-1 me-2">view message</button>
+                        @elseif ($user_notification->type == 'comment')
+                          <!-- comment notifications START -->
+                          <li class="mb-1">
+                            <div
+                            @if ($user_notification['seen'] == 0)
+                              class="list-group-item rounded badge-unread d-flex border-0 p-3 justify-content-between"
+                            @else
+                              class="list-group-item rounded d-flex border-0 p-3 justify-content-between"
+                            @endif
+                            >
+                                  <div class="d-flex align-items-center">
+                                      <!-- Avatar -->
+                                      <div class="avatar me-2 d-sm-inline-block">
+                                      <a href="#!"> <img class="avatar-img rounded-circle" src="{{$user_notification->user_profile}}" alt=""> </a>
                                       </div>
-                                      <p class="small ms-3">2min</p>
+
+                                      
+                                      <!-- Info -->
+                                      <div>
+                                      <div class="nav nav-divider">
+                                          <p class="nav-item card-title mb-0"><b>new comment</b></p>
+                                          <span class="nav-item small"> {{$user_notification['created_at']->diffForHumans(null, true, true)}} ago</span>
+                                      </div>
+                                      <p class="mb-0 small">{{$user_notification->body}} like your post</p>
+                                      </div>
                                   </div>
-                              </div>
-                            </li>
+
+                                  <!-- Card feed action dropdown START -->
+                                  <div class="dropdown">
+                                      <a href="#" class="text-secondary btn btn-secondary-soft-hover py-1 px-2" id="cardFeedAction" data-bs-toggle="dropdown" aria-expanded="false">
+                                          <i class="bi bi-three-dots"></i>
+                                      </a>
+                                      <!-- Card feed action dropdown menu -->
+                                      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction">
+                                          <li>        
+                                              <button class="dropdown-item" wire:click="delete({{$user_notification->id}})"><i class="bi bi-check-all"> </i> Mark as Read</a></button>
+                                          </li>
+                                          <li><a class="dropdown-item" href="{{$user_notification->url}}"> <i class="bi bi-file-post-fill"></i> view post</a></li>
+                                      </ul>
+                                  </div>
+                                  <!-- Card feed action dropdown END -->
+
+                            </div>
+                          </li>
+                          <!-- comment notifications END -->
                         @endif
 
                     @endforeach
