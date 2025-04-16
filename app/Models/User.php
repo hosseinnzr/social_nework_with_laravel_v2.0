@@ -27,6 +27,10 @@ class User extends Authenticatable
         'birthday',
         'request',
         'privacy',
+        'like_notification',
+        'comment_notification',
+        'follow_notification',
+        'follow_request_notification'
     ];
 
     protected $hidden = [
