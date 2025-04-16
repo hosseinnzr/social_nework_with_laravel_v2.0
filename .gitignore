@@ -11,6 +11,9 @@
 /public/explore_algorithm/files/features.pkl
 /public/explore_algorithm/files/*.csv
 /public/explore_algorithm/features/*.npy
+
+/public/explore_algorithm/image_names.npy
+/public/explore_algorithm/image_index.index
 /storage/*.key
 /vendor
 .env
