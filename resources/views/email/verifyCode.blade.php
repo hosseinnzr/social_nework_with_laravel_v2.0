@@ -60,7 +60,7 @@
   <div class="email-container">
     <div class="header">🔐 Your Verification Code</div>
     <div class="content">
-      Use the following code to complete your login or verification process.
+      Use the following code to complete your verification process.
     </div>
     <div class="otp-code">{{ $code }}</div>
     <div class="content">
