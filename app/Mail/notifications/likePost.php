@@ -13,12 +13,14 @@ class likePost extends Mailable
     use Queueable, SerializesModels;
 
     public $userName;
+    public $postId;
     /**
      * Create a new message instance.
      */
-    public function __construct($userName)
+    public function __construct($userName, $postId)
     {
         $this->userName = $userName;
+        $this->postId = $postId;
     }
 
     /**

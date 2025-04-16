@@ -38,9 +38,9 @@ class LikePost extends Component
 
             // send email
             $user = User::findOrFail($post['UID']);
-            if($user->like_notification == 1){
+            if($user->like_notification == 1 && auth::id() != $post['UID']){
                 $userName = Auth::user();
-                Mail::to($user->email)->send(new likeNotifications($userName['user_name']));
+                Mail::to($user->email)->send(new likeNotifications($userName['user_name'], $post['id']));
             }
         }
     }
@@ -65,7 +65,7 @@ class LikePost extends Component
         $post = Post::findOrFail($this->post['id']);
 
         // update like number
-        $post->like_number = like_post::where('UID',auth::id())->where('post_id', $this->post['id'])->count();
+        $post->like_number = like_post::where('post_id', $this->post['id'])->count();
         $post->save();
 
         return view('livewire.like-post');
