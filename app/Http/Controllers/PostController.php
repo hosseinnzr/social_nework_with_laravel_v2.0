@@ -137,12 +137,13 @@ class PostController extends Controller
             }
 
             $find_posts = $find_posts->get();
-            foreach ($posts as $post) {
+            foreach ($find_posts as $post) {
                 $user = User::where('id', $post->UID)->select('id', 'user_name', 'profile_pic')->first();
                 $post['user_id'] = $user['id'];
                 $post['user_name'] = $user['user_name'];
                 $post['user_profile_pic'] = $user['profile_pic'];
             }
+
 
             $follower_user = follow::where('following_id', Auth::id())->get();
             $following_user = follow::where('follower_id', Auth::id())->get();
