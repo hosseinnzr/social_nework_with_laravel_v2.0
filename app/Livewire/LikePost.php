@@ -3,9 +3,13 @@
 namespace App\Livewire;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use App\Models\Post;
+use App\Models\User;
 use App\Models\likePost as like_post;
 use App\Models\notifications;
+use App\Mail\notifications\likePost as likeNotifications;
+use App\Mail\SendMail;
 use Livewire\Component;
 
 class LikePost extends Component
@@ -31,6 +35,13 @@ class LikePost extends Component
                 'body' => auth::user()->user_name,
                 'type'=> 'like',
             ]);
+
+            // send email
+            $user = User::findOrFail($post['UID']);
+            if($user->like_notification == 1){
+                $userName = Auth::user();
+                Mail::to($user->email)->send(new likeNotifications($userName['user_name']));
+            }
         }
     }
 
