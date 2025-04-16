@@ -23,7 +23,7 @@ class PrivacySettings extends Component
             notifications::
                 where('delete', '0')->
                 where('type','follow_request')->
-                where('UID', Auth::id())->get();
+                where('to', Auth::id())->get();
 
                 if(count($find_notification_requests) != 0){
                 
