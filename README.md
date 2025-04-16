@@ -2,7 +2,7 @@
 composer require intervention/image
 install gd in windows and enable extention in xammp
 composer require simplesoftwareio/simple-qrcode "~4"
-
+add upload video in v3.0
 php artisan storage:link
 
 ## social_nework_with_laravel
